@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { DefaultLayout } from './components/DefaultLayout';
 import { trpc } from './_trpc/client';
-import { getTokenFromUrl } from '~/utils/get-token-from-url';
+import { getIdFromUrl } from '~/utils/get-token-from-url';
 import { useCallback, useRef, useState } from 'react';
 
 const types = [
@@ -41,7 +41,7 @@ export default function HomePage() {
     {
       getNextPageParam(lastPage) {
         if (lastPage.next == null) return null;
-        const nextCursor = parseInt(getTokenFromUrl(lastPage.next, 6), 10);
+        const nextCursor = getIdFromUrl(lastPage.next, 6);
         return nextCursor.toString();
       },
     },
@@ -71,9 +71,7 @@ export default function HomePage() {
   const pokeIds =
     pokemonsQuery.data?.pages
       .map((page) =>
-        page.results.map((pokeRes) =>
-          parseInt(getTokenFromUrl(pokeRes.url, 8), 10),
-        ),
+        page.results.map((pokeRes) => getIdFromUrl(pokeRes.url, 8)),
       )
       .flat() ?? [];
   const pokemons = trpc.useQueries((t) =>
@@ -111,7 +109,7 @@ export default function HomePage() {
             <select
               defaultValue="All"
               onChange={(e) => setSearchedType(e.target.value)}
-              className='bg-gray-700 border-gray-600 rounded-lg px-2'
+              className="bg-gray-700 border-gray-600 rounded-lg px-2"
             >
               <option value="All" defaultChecked>
                 All

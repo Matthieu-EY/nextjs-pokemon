@@ -4,3 +4,7 @@ export function getTokenFromUrl(url: string, index: number) {
   if (index > tokens.length) return tokens[tokens.length - 1];
   return tokens[index];
 }
+
+export function getIdFromUrl(url: string, index: number) {
+  return parseInt(getTokenFromUrl(url, index), 10);
+}

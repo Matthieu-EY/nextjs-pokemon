@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import type { Pokemon } from '~/libs/poke/dto/pokemon';
+import type { Pokemon, PokemonMove } from '~/libs/poke/dto/pokemon';
 import { useRef, useState } from 'react';
 import { PokemonTypeFC } from './PokemonType';
 import { PokemonInfo } from './PokemonInfo';
@@ -10,9 +10,10 @@ import { formatName } from '~/utils/format-str';
 interface PokemonProps {
   pokemon: Pokemon;
   evolution_pokemons?: Pokemon[];
+  moves?: PokemonMove[];
 }
 
-function PokemonDetail({ pokemon, evolution_pokemons }: PokemonProps) {
+function PokemonDetail({ pokemon, evolution_pokemons, moves }: PokemonProps) {
   const [isFrontFacing, setIsFrontFacing] = useState(true);
   const [isMale, setIsMale] = useState(true);
   const [isShiny, setIsShiny] = useState(false);
@@ -149,6 +150,36 @@ function PokemonDetail({ pokemon, evolution_pokemons }: PokemonProps) {
               </Link>
             ))}
         </div>
+      </div>
+
+      <div className='flex flex-col justify-center mt-4 mb-4'>
+        <h4 className='w-full text-center text-2xl mb-4'>Moves</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Level</th>
+              <th>Move</th>
+              <th>Type</th>
+              <th>Category</th>
+              <th>Power</th>
+              <th>Accuracy</th>
+              <th>PP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {moves?.map((move) => (
+              <tr key={move.id}>
+                <th>{move.level}</th>
+                <th className='capitalize'>{move.name}</th>
+                <th>{move.type.name}</th>
+                <th>{move.damage_class.name}</th>
+                <th>{move.power ? move.power : '-'}</th>
+                <th>{move.accuracy ? `${move.accuracy} %` : '-'}</th>
+                <th>{move.pp}</th>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       
 

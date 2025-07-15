@@ -11,16 +11,6 @@ export interface PokemonType {
   type: ExternalResource;
 }
 
-export interface PokemonMove {
-  move: ExternalResource;
-  version_group_details: {
-    level_learned_at: number;
-    move_learn_method: ExternalResource;
-    order: number | null;
-    version_group: ExternalResource;
-  }[];
-}
-
 export interface PokemonSprites extends Indexable {
   back_default: string | null;
   back_female: string | null;
@@ -49,7 +39,15 @@ export interface Pokemon {
     latest: string | null;
     legacy: string | null;
   };
-  moves: PokemonMove[];
+  moves: {
+    move: ExternalResource;
+    version_group_details: {
+      level_learned_at: number;
+      move_learn_method: ExternalResource;
+      order: number | null;
+      version_group: ExternalResource;
+    }[];
+  }[];
   stats: {
     base_stat: number;
     effort: number;
@@ -95,4 +93,34 @@ export interface PokemonEvolutionChain {
     species: ExternalResource;
     evolves_to: EvolutionChainLink[];
   }
+}
+
+export interface PokemonMove {
+  id: number;
+  name: string;
+  accuracy: number;
+  pp: number;
+  priority: number;
+  power: number;
+  damage_class: ExternalResource;
+  type: ExternalResource;
+  learned_by_pokemon: ExternalResource[];
+  stat_changes: {
+    change: number;
+    stat: ExternalResource;
+  }[];
+  meta: {
+    ailment: ExternalResource;
+    category: ExternalResource;
+    min_hits: number | null;
+    max_hits: number | null;
+    drain: number;
+    healing: number;
+    crit_rate: number;
+    ailment_chance: number;
+    flinch_chance: number;
+    stat_chance: number;
+  }
+
+  level?: number;
 }

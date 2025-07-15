@@ -3,7 +3,7 @@
  */
 import { fetchPOKE } from '.';
 import { ExternalResource, PokePaginatedResponse } from './dto/common';
-import { Pokemon, PokemonEvolutionChain, PokemonSpecies } from './dto/pokemon';
+import { Pokemon, PokemonEvolutionChain, PokemonMove, PokemonSpecies } from './dto/pokemon';
 
 /**
  * API Methods
@@ -63,12 +63,25 @@ export const evolutionApi = {
     fetchPOKE<PokemonEvolutionChain>({
       path: `/api/v2/evolution-chain/${id}`,
     }),
-}
+};
+
+export const moveApi = {
+  /**
+   * Get Move by ID
+   * @param id Id of the move
+   * @returns The move
+   */
+  getMoveById: (id: number) =>
+    fetchPOKE<PokemonMove>({
+      path: `/api/v2/move/${id}`,
+    }),
+};
 
 const pokeApi = {
   pokemon: pokemonApi,
   species: speciesApi,
   evolution: evolutionApi,
+  move: moveApi,
 };
 
 export default pokeApi;

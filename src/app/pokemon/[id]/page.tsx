@@ -2,25 +2,56 @@ import { notFound } from 'next/navigation';
 import { DefaultLayout } from '../../components/DefaultLayout';
 import { serverTrpc } from '~/app/_trpc/server';
 import { PokemonDetail } from '~/app/components/Pokemon/Pokemon';
-import { getTokenFromUrl } from '~/utils/get-token-from-url';
+import { getIdFromUrl } from '~/utils/get-token-from-url';
 
-export default async function PokemonDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function PokemonDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id: idParam } = await params;
 
   const id = parseInt(idParam, 10);
 
   try {
     const pokemon = await serverTrpc.poke.getPokemonById({ id });
-    
-    const speciesId = parseInt(getTokenFromUrl(pokemon.species.url, 30), 10);
+
+    const speciesId = getIdFromUrl(pokemon.species.url, 30);
     const species = await serverTrpc.poke.getSpeciesById({ id: speciesId });
 
-    const evolutionChainID = parseInt(getTokenFromUrl(species.evolution_chain.url, 30), 10);
-    const evolution_chain = await serverTrpc.poke.getEvolutionById({ id: evolutionChainID });
+    const evolutionChainID = getIdFromUrl(species.evolution_chain.url, 30);
+    const evolution_chain = await serverTrpc.poke.getEvolutionById({
+      id: evolutionChainID,
+    });
+
+    const moves_preprocess = pokemon.moves
+      .filter((move) => move.version_group_details[0].level_learned_at > 0)
+      .sort((move1, move2) => move1.version_group_details[0].level_learned_at - move2.version_group_details[0].level_learned_at)
+      .map((move) => {
+        return { 
+          id: getIdFromUrl(move.move.url, 30),
+          level: move.version_group_details[0].level_learned_at,
+        }
+      });
+
+    const moves = await Promise.all(
+      moves_preprocess.map(async (move_preprocess) => {
+        const move = await serverTrpc.poke.getMoveById({ id: move_preprocess.id });
+        return {
+          ...move,
+          level: move_preprocess.level,
+        };
+      })
+    );
+    /*
+    const valid_moves = moves.filter(
+      (move) => move.damage_class.name !== 'status',
+    );
+    */
 
     // TODO: this should REALLY be somewhere else
 
-    // parse evolution chain into more simplified format 
+    // parse evolution chain into more simplified format
     const evolutions = [];
     let curr_chain_link = evolution_chain.chain;
     while (curr_chain_link) {
@@ -28,17 +59,23 @@ export default async function PokemonDetailPage({ params }: { params: Promise<{ 
       curr_chain_link = curr_chain_link.evolves_to?.[0];
     }
 
-    const evolution_pokemons = await Promise.all(evolutions.map((evolution) => {
-      if (evolution === pokemon.name) return pokemon;
-      return serverTrpc.poke.getPokemonByName({ name: evolution });
-    }));
+    const evolution_pokemons = await Promise.all(
+      evolutions.map((evolution) => {
+        if (evolution === pokemon.name) return pokemon;
+        return serverTrpc.poke.getPokemonByName({ name: evolution });
+      }),
+    );
 
     return (
       <DefaultLayout>
-        <PokemonDetail pokemon={pokemon} evolution_pokemons={evolution_pokemons} />
+        <PokemonDetail
+          pokemon={pokemon}
+          evolution_pokemons={evolution_pokemons}
+          moves={moves}
+        />
       </DefaultLayout>
     );
   } catch {
     notFound();
   }
-};
+}

@@ -76,5 +76,18 @@ export const pokeRouter = router({
     )
     .query(async ({ input }) => {
       return await pokeApi.evolution.getEvolutionById(input.id);
-    })
+    }),
+  
+  /**
+   * Get Move By ID
+   */
+  getMoveById: publicProcedure
+    .input(
+      z.object({
+        id: z.number().min(0),
+      }),
+    )
+    .query(async ({ input }) => {
+      return await pokeApi.move.getMoveById(input.id);
+    }),
 });
