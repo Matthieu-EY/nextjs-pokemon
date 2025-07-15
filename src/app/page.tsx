@@ -30,6 +30,16 @@ export default function HomePage() {
     },
   });
 
+  /*
+  const ditto = trpc.poke.getPokemonById.useQuery({
+    id: 35
+  });
+  const pokemons = trpc.poke.list.useQuery({
+    cursor: "50",
+    limit: 50,
+  });
+  */
+
   return (
     <DefaultLayout>
       <div className="flex flex-col bg-gray-800 py-8">

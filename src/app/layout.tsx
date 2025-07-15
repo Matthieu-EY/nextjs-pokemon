@@ -9,8 +9,8 @@ const raleway = Raleway({
 });
 
 export const metadata: Metadata = {
-  title: 'tRPC Prisma Starter',
-  description: 'A starter project with tRPC, Prisma, and Next.js',
+  title: 'Pokemon',
+  description: 'Mini-projet Pokemon avec tRPC, Prisma, et Next.js',
 };
 
 export default function RootLayout({
