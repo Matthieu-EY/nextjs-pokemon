@@ -3,7 +3,7 @@
  */
 import { fetchPOKE } from '.';
 import { ExternalResource, PokePaginatedResponse } from './dto/common';
-import { Pokemon, PokemonSpecies } from './dto/pokemon';
+import { Pokemon, PokemonEvolutionChain, PokemonSpecies } from './dto/pokemon';
 
 /**
  * API Methods
@@ -29,6 +29,16 @@ export const pokemonApi = {
     fetchPOKE<Pokemon>({
       path: `/api/v2/pokemon/${id}`,
     }),
+  
+  /**
+   * Get Pokemon By Name
+   * @param name Name of the pokemon (english)
+   * @returns The Pokemon
+   */
+  getPokeByName: (name: string) =>
+    fetchPOKE<Pokemon>({
+      path: `/api/v2/pokemon/${name}`,
+    }),
 };
 
 export const speciesApi = {
@@ -43,9 +53,22 @@ export const speciesApi = {
     }),
 };
 
+export const evolutionApi = {
+  /**
+   * Get Evolution chain (ex: Cleffa -> Clefairy -> Clefable is a chain)
+   * @param id Id of the evolution chain
+   * @returns 
+   */
+  getEvolutionById: (id: number) =>
+    fetchPOKE<PokemonEvolutionChain>({
+      path: `/api/v2/evolution-chain/${id}`,
+    }),
+}
+
 const pokeApi = {
   pokemon: pokemonApi,
   species: speciesApi,
+  evolution: evolutionApi,
 };
 
 export default pokeApi;

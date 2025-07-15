@@ -38,6 +38,19 @@ export const pokeRouter = router({
     .query(async ({ input }) => {
       return await pokeApi.pokemon.getPokeById(input.id);
     }),
+  
+    /**
+     * Get Pokemon details by Name
+     */
+  getPokemonByName: publicProcedure
+    .input(
+      z.object({
+        name: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      return await pokeApi.pokemon.getPokeByName(input.name);
+    }),
 
   /**
    * Get Species details by ID
@@ -45,10 +58,23 @@ export const pokeRouter = router({
   getSpeciesById: publicProcedure
     .input(
       z.object({
-        id: z.number().min(0)
+        id: z.number().min(0),
       }),
     )
     .query(async ({ input }) => {
       return await pokeApi.species.getSpeciesById(input.id);
+    }),
+  
+  /**
+   * Get Evolution chain by ID
+   */
+  getEvolutionById: publicProcedure
+    .input(
+      z.object({
+        id: z.number().min(0),
+      }),
+    )
+    .query(async ({ input }) => {
+      return await pokeApi.evolution.getEvolutionById(input.id);
     })
 });
