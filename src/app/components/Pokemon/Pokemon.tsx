@@ -9,9 +9,10 @@ import { formatName } from '~/utils/format-str';
 
 interface PokemonProps {
   pokemon: Pokemon;
+  evolution_pokemons?: Pokemon[];
 }
 
-function PokemonDetail({ pokemon }: PokemonProps) {
+function PokemonDetail({ pokemon, evolution_pokemons }: PokemonProps) {
   const [isFrontFacing, setIsFrontFacing] = useState(true);
   const [isMale, setIsMale] = useState(true);
   const [isShiny, setIsShiny] = useState(false);
@@ -136,6 +137,18 @@ function PokemonDetail({ pokemon }: PokemonProps) {
             )}
           </div>
         </PokemonInfo>
+      </div>
+
+      <div className='flex flex-col justify-center mt-8 mb-4'>
+        <h4 className='w-full text-center text-2xl'>Evolution</h4>
+        <div className='flex flex-row justify-around items-center px-16'>
+            {evolution_pokemons?.map((evol_pokemon) => (
+              <Link href={`/pokemon/${evol_pokemon.id}`} key={evol_pokemon.id} className='flex flex-col justify-center items-center'>
+                <img src={evol_pokemon.sprites.front_default!} className={`min-w-[${evol_pokemon.name === pokemon.name ? 200 : 100}px] min-h-[${evol_pokemon.name === pokemon.name ? 200 : 100}px]`}/>
+                <p className={`text-xl capitalize ${evol_pokemon.name === pokemon.name && 'underline'}`}>{evol_pokemon.name}</p>
+              </Link>
+            ))}
+        </div>
       </div>
       
 
