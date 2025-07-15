@@ -111,6 +111,7 @@ export default function HomePage() {
             <select
               defaultValue="All"
               onChange={(e) => setSearchedType(e.target.value)}
+              className='bg-gray-700 border-gray-600 rounded-lg px-2'
             >
               <option value="All" defaultChecked>
                 All
