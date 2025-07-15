@@ -3,11 +3,7 @@ import { DefaultLayout } from '../../components/DefaultLayout';
 import { serverTrpc } from '~/app/_trpc/server';
 import { PokemonDetail } from '~/app/components/Pokemon/Pokemon';
 
-export default async function PokemonDetailPage({
-  params,
-}: {
-  params: { id: string };
-}) {
+export default async function PokemonDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: idParam } = await params;
 
   const id = parseInt(idParam, 10);
