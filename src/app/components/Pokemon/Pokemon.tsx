@@ -1,31 +1,15 @@
-'use client';
-
 import Link from 'next/link';
 import type { Pokemon } from '~/libs/poke/dto/pokemon';
-import { useRef, useState } from 'react';
-import { PokemonTypeFC } from './PokemonType';
 import { PokemonInfo } from './PokemonInfo';
 import { formatName } from '~/utils/format-str';
+import { PokemonCries } from './PokemonCries';
+import { PokemonDisplay } from './PokemonDisplay';
 
 interface PokemonProps {
   pokemon: Pokemon;
 }
 
 function PokemonDetail({ pokemon }: PokemonProps) {
-  const [isFrontFacing, setIsFrontFacing] = useState(true);
-  const [isMale, setIsMale] = useState(true);
-  const [isShiny, setIsShiny] = useState(false);
-
-  // for playing sounds when user clicks a button
-  const soundLatest = useRef<HTMLAudioElement>(null);
-  const soundLegacy = useRef<HTMLAudioElement>(null);
-
-  // TODO: this works, but some refactor couldn't hurt here
-  const sprite_name =
-    (isFrontFacing ? 'front' : 'back') +
-    (isShiny ? '_shiny' : '') +
-    (isMale ? (!isShiny ? '_default' : '') : '_female');
-
   return (
     <div className="flex flex-col justify-center h-full px-8 ">
       <Link className="text-gray-300 underline mb-4" href="/">
@@ -35,60 +19,10 @@ function PokemonDetail({ pokemon }: PokemonProps) {
         {pokemon.name}
       </h1>
 
-      <div className="w-[80%] m-auto flex flex-col justify-center items-center">
-        <img
-          src={pokemon.sprites[sprite_name]!}
-          className="w-full max-w-[400px]"
-        />
-
-        <div className="w-[50%] flex flex-row justify-around mb-4">
-          {pokemon.types.map((type) => (
-            <PokemonTypeFC key={type.type.url} {...type} />
-          ))}
-        </div>
-
-        <div className="w-full m-auto flex flex-row mb-4">
-          <div className="flex-1 flex justify-center items-center">
-            {pokemon.sprites.front_female != null && (
-              <button
-                onClick={() => setIsMale((isMale) => !isMale)}
-                type="button"
-                className="flex p-2 gap-x-4 bg-stone-400 rounded-full items-center justify-center"
-              >
-                <img src="/male.svg" className="max-h-[30px]" alt="Male" />
-                <img src="/female.svg" className="max-h-[30px]" alt="Female" />
-              </button>
-            )}
-          </div>
-
-          <div className="flex-1 flex justify-center items-center">
-            {pokemon.sprites.back_default && (
-              <button
-                onClick={() =>
-                  setIsFrontFacing((isFrontFacing) => !isFrontFacing)
-                }
-                role="button"
-                className="bg-stone-400 rounded-full cursor-pointer"
-              >
-                <img src="/turn.png" className="w-[50px]" />
-              </button>
-            )}
-          </div>
-
-          <div className="flex-1 flex justify-center items-center">
-            {pokemon.sprites.front_shiny && (
-              <button
-                onClick={() => setIsShiny((isShiny) => !isShiny)}
-                type="button"
-                className="flex p-2 gap-x-4 bg-stone-400 rounded-full items-center justify-center"
-              >
-                <p>Shiny</p>
-                <p>Not shiny</p>
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
+      <PokemonDisplay 
+        sprites={pokemon.sprites}
+        types={pokemon.types}
+      />
 
       <div className="flex flex-row justify-center gap-x-4">
         <PokemonInfo name="Height">
@@ -99,41 +33,7 @@ function PokemonDetail({ pokemon }: PokemonProps) {
         </PokemonInfo>
 
         <PokemonInfo name="Cries">
-          <div className="flex flex-row gap-x-4 px-2">
-            {pokemon.cries.latest && (
-              <figure className="w-full">
-                <figcaption>Latest</figcaption>
-                <button
-                  onClick={() =>
-                    soundLatest.current?.paused
-                      ? void soundLatest.current.play()
-                      : soundLatest.current?.pause()
-                  }
-                  className="w-full text-center border border-red"
-                >
-                  Play
-                </button>
-                <audio ref={soundLatest} src={pokemon.cries.latest} />
-              </figure>
-            )}
-
-            {pokemon.cries.legacy && (
-              <figure className="w-full">
-                <figcaption>Legacy</figcaption>
-                <button
-                  onClick={() =>
-                    soundLegacy.current?.paused
-                      ? void soundLegacy.current.play()
-                      : soundLegacy.current?.pause()
-                  }
-                  className="w-full text-center border border-red"
-                >
-                  Play
-                </button>
-                <audio ref={soundLegacy} src={pokemon.cries.legacy} />
-              </figure>
-            )}
-          </div>
+          <PokemonCries {...pokemon.cries} />
         </PokemonInfo>
 
         <PokemonInfo name="Abilities">
