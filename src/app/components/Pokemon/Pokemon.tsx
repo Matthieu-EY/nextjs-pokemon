@@ -37,7 +37,7 @@ function PokemonDetail({ pokemon }: PokemonProps) {
 
       <div className="w-[80%] m-auto flex flex-col justify-center items-center">
         <img
-          src={pokemon.sprites[sprite_name]}
+          src={pokemon.sprites[sprite_name] as string}
           className="w-full max-w-[400px]"
         />
 
@@ -100,7 +100,7 @@ function PokemonDetail({ pokemon }: PokemonProps) {
               <figure className='w-full'>
                 <figcaption>Latest</figcaption>
                 <button 
-                  onClick={() => soundLatest.current?.paused ? soundLatest.current.play() : soundLatest.current?.pause()}
+                  onClick={() => soundLatest.current?.paused ? void (soundLatest.current.play()) : soundLatest.current?.pause()}
                   className='w-full text-center border border-red'>
                   Play
                 </button>
@@ -112,7 +112,7 @@ function PokemonDetail({ pokemon }: PokemonProps) {
               <figure className='w-full'>
                 <figcaption>Legacy</figcaption>
                 <button 
-                  onClick={() => soundLegacy.current?.paused ? soundLegacy.current.play() : soundLegacy.current?.pause()}
+                  onClick={() => soundLegacy.current?.paused ? void (soundLegacy.current.play()): soundLegacy.current?.pause()}
                   className='w-full text-center border border-red'>
                   Play
                 </button>
@@ -128,16 +128,15 @@ function PokemonDetail({ pokemon }: PokemonProps) {
               <p>Ability</p>
               <p>{pokemon.abilities.filter((ability) => !ability.is_hidden).map((ability) => formatName(ability.ability.name)).join(" or ")}</p>
             </div>
-            {pokemon.abilities.filter((ability) => ability.is_hidden).length > 0 && (
+            {pokemon.abilities.find((ability) => ability.is_hidden) != undefined && (
               <div>
                 <p>Hidden ability</p>
-                <p>{formatName(pokemon.abilities.filter((ability) => ability.is_hidden)[0]?.ability.name)}</p>
+                <p>{formatName(pokemon.abilities.find((ability) => ability.is_hidden)?.ability.name ?? "")}</p>
             </div>
             )}
           </div>
         </PokemonInfo>
-      </div>
-      
+      </div>      
 
       <h2 className="text-2xl font-semibold py-2">Raw data:</h2>
       <pre className="bg-gray-900 p-4 rounded-xl overflow-x-scroll">
