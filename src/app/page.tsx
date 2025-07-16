@@ -36,7 +36,7 @@ export default function HomePage() {
   // name inside "search by name" input
   const [searchedName, setSearchedName] = useState('');
   const [searchedType, setSearchedType] = useState<Type | 'All'>('All');
-  
+
   const pokemonsQuery = trpc.poke.list.useInfiniteQuery(
     {
       limit: FETCH_LIMIT_POKEMONS,
@@ -52,13 +52,10 @@ export default function HomePage() {
   );
 
   const onScroll = async () => {
-    if (
-      pokemonsQuery.hasNextPage &&
-      !pokemonsQuery.isFetching
-    ) {
+    if (pokemonsQuery.hasNextPage && !pokemonsQuery.isFetching) {
       await pokemonsQuery.fetchNextPage();
     }
-  }
+  };
 
   const observedRef = useScrollRef(() => onScroll());
 
@@ -76,9 +73,9 @@ export default function HomePage() {
 
   const pokemons = pokemonsTrpc.map((poke) => poke.data);
 
-
   const filteredPokemons = pokemons.filter(
-    (pokemon: Pokemon | undefined): pokemon is Pokemon => pokemon  != undefined &&
+    (pokemon: Pokemon | undefined): pokemon is Pokemon =>
+      pokemon != undefined &&
       (searchedName === '' ||
         new RegExp(searchedName, 'i').exec(pokemon?.name) != null) &&
       (searchedType === 'All' ||

@@ -1,7 +1,7 @@
 import { Indexable } from '~/libs/poke/dto/common';
 import type { PokemonType } from '~/libs/poke/dto/pokemon';
 
-const colors: Indexable = {
+const colors: Indexable<string> = {
   normal: '#9FA19F',
   fighting: '#FF8000',
   flying: '#81B9EF',

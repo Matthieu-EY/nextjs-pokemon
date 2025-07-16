@@ -1,5 +1,3 @@
-import { env } from '~/server/env';
-
 interface TMDBRequestOptions {
   path: string;
   params?: Record<string, string | number | boolean>;

@@ -16,6 +16,4 @@ export interface ExternalResource {
   url: string;  // url to call to get the info related to this element
 };
 
-export interface Indexable {
-  [key: string]: any;
-};
+export type Indexable<T> = Record<string, T>;

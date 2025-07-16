@@ -25,7 +25,7 @@ export interface PokemonMove {
   }[];
 }
 
-export interface PokemonSprites extends Indexable {
+export interface PokemonSprites extends Indexable<string | null> {
   back_default: string | null;
   back_female: string | null;
   back_shiny: string | null;
@@ -64,7 +64,6 @@ export interface Pokemon {
     generation: ExternalResource;
     types: PokemonType[];
   }[];
-  
 }
 
 export interface PokemonSpecies {
