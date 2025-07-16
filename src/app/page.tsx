@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { DefaultLayout } from './components/DefaultLayout';
 import { trpc } from './_trpc/client';
-import { getTokenFromUrl } from '~/utils/get-token-from-url';
+import { parseUrlAndGetParam } from '~/utils/get-token-from-url';
 import { useState } from 'react';
 import { useScrollRef } from './hooks/useScrollRef';
 import { Pokemon } from '~/libs/poke/dto/pokemon';
@@ -44,8 +44,7 @@ export default function HomePage() {
     {
       getNextPageParam(lastPage) {
         if (lastPage.next == null) return null;
-        const nextCursorIndexInUrl = 6;
-        const nextCursor = getTokenFromUrl(lastPage.next, nextCursorIndexInUrl);
+        const nextCursor = parseUrlAndGetParam(lastPage.next, 'offset');
         return nextCursor;
       },
     },
@@ -63,12 +62,12 @@ export default function HomePage() {
     pokemonsQuery.data?.pages
       .map((page) =>
         page.results.map((pokeRes) =>
-          parseInt(getTokenFromUrl(pokeRes.url, 8), 10),
+          parseInt(parseUrlAndGetParam(pokeRes.url) ?? '', 10),
         ),
       )
       .flat() ?? [];
   const pokemonsTrpc = trpc.useQueries((t) =>
-    pokeIds?.map((id) => t.poke.getPokemonById({ id })),
+    pokeIds.map((id) => t.poke.getPokemonById({ id })),
   );
 
   const pokemons = pokemonsTrpc.map((poke) => poke.data);
