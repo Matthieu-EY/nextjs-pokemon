@@ -1,5 +1,6 @@
 import { pokeRouter } from './routers/poke';
 import { postRouter } from './routers/post';
+import { teamRouter } from './routers/team';
 import { createCallerFactory, publicProcedure, router } from './trpc';
 
 export const appRouter = router({
@@ -7,6 +8,7 @@ export const appRouter = router({
 
   post: postRouter,
   poke: pokeRouter,
+  team: teamRouter,
 });
 
 export const createCaller = createCallerFactory(appRouter);
