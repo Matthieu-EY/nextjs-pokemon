@@ -4,7 +4,9 @@ import Link from 'next/link';
 import { DefaultLayout } from './components/DefaultLayout';
 import { trpc } from './_trpc/client';
 import { getTokenFromUrl } from '~/utils/get-token-from-url';
-import { useCallback, useRef, useState } from 'react';
+import { useState } from 'react';
+import { useScrollRef } from './hooks/useScrollRef';
+import { Pokemon } from '~/libs/poke/dto/pokemon';
 
 const types = [
   'normal',
@@ -25,48 +27,40 @@ const types = [
   'dragon',
   'dark',
   'fairy',
-];
+] as const;
+type Type = (typeof types)[number];
+
+const FETCH_LIMIT_POKEMONS = 50;
 
 export default function HomePage() {
-  const scrollObserver = useRef<IntersectionObserver>(null);
-
   // name inside "search by name" input
   const [searchedName, setSearchedName] = useState('');
-  const [searchedType, setSearchedType] = useState('All');
-
+  const [searchedType, setSearchedType] = useState<Type | 'All'>('All');
+  
   const pokemonsQuery = trpc.poke.list.useInfiniteQuery(
     {
-      limit: 50,
+      limit: FETCH_LIMIT_POKEMONS,
     },
     {
       getNextPageParam(lastPage) {
         if (lastPage.next == null) return null;
-        const nextCursor = parseInt(getTokenFromUrl(lastPage.next, 6), 10);
-        return nextCursor.toString();
+        const nextCursorIndexInUrl = 6;
+        const nextCursor = getTokenFromUrl(lastPage.next, nextCursorIndexInUrl);
+        return nextCursor;
       },
     },
   );
 
-  const lastElementRef = useCallback(
-    (node: HTMLButtonElement) => {
-      if (pokemonsQuery.isLoading) return;
+  const onScroll = async () => {
+    if (
+      pokemonsQuery.hasNextPage &&
+      !pokemonsQuery.isFetching
+    ) {
+      await pokemonsQuery.fetchNextPage();
+    }
+  }
 
-      if (scrollObserver.current) scrollObserver.current.disconnect();
-
-      scrollObserver.current = new IntersectionObserver((entries) => {
-        if (
-          entries[0].isIntersecting &&
-          pokemonsQuery.hasNextPage &&
-          !pokemonsQuery.isFetching
-        ) {
-          pokemonsQuery.fetchNextPage();
-        }
-      });
-
-      if (node) scrollObserver.current.observe(node);
-    },
-    [pokemonsQuery],
-  );
+  const observedRef = useScrollRef(() => onScroll());
 
   const pokeIds =
     pokemonsQuery.data?.pages
@@ -76,16 +70,19 @@ export default function HomePage() {
         ),
       )
       .flat() ?? [];
-  const pokemons = trpc.useQueries((t) =>
+  const pokemonsTrpc = trpc.useQueries((t) =>
     pokeIds?.map((id) => t.poke.getPokemonById({ id })),
   );
 
+  const pokemons = pokemonsTrpc.map((poke) => poke.data);
+
+
   const filteredPokemons = pokemons.filter(
-    (pokemon) =>
+    (pokemon: Pokemon | undefined): pokemon is Pokemon => pokemon  != undefined &&
       (searchedName === '' ||
-        pokemon.data?.name.match(new RegExp(searchedName, 'i'))) &&
+        new RegExp(searchedName, 'i').exec(pokemon?.name) != null) &&
       (searchedType === 'All' ||
-        pokemon.data?.types.some((type) => type.type.name === searchedType)),
+        pokemon?.types.some((type) => type.type.name === searchedType)),
   );
 
   return (
@@ -110,7 +107,7 @@ export default function HomePage() {
             <p>Search by type</p>
             <select
               defaultValue="All"
-              onChange={(e) => setSearchedType(e.target.value)}
+              onChange={(e) => setSearchedType(e.target.value as Type | 'All')}
             >
               <option value="All" defaultChecked>
                 All
@@ -125,7 +122,7 @@ export default function HomePage() {
         </div>
 
         <div className="mt-4 grid justify-center items-center content-center justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,150px)] auto-rows-auto gap-4">
-          {filteredPokemons.map(({ data: pokemon }, index) => (
+          {filteredPokemons.map((pokemon, index) => (
             <div
               key={index + 1}
               className="flex flex-col justify-center items-center rounded-md border border-gray-600 bg-gray-700 p-4 w-[150px] h-[200px]"
@@ -153,7 +150,7 @@ export default function HomePage() {
           <button
             className="rounded-md bg-indigo-500 px-4 py-2 mt-6 text-white hover:bg-indigo-600"
             onClick={() => void pokemonsQuery.fetchNextPage()}
-            ref={lastElementRef}
+            ref={observedRef}
             disabled={
               !pokemonsQuery.hasNextPage || pokemonsQuery.isFetchingNextPage
             }
