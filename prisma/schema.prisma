@@ -21,3 +21,22 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 }
+
+model Team {
+  id   Int     @id @default(autoincrement())
+  name String?
+  size Int     @default(6)
+
+  pokemons PokemonCombat[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model PokemonCombat {
+  id        Int @id @default(autoincrement())
+  idPokemon Int
+
+  Team   Team? @relation(fields: [teamId], references: [id])
+  teamId Int?
+}

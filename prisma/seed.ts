@@ -20,6 +20,17 @@ async function main() {
     },
     update: {},
   });
+
+  await prisma.pokemonCombat.upsert({
+    where: {
+      id: 1,
+    },
+    create: {
+      id: 1,
+      idPokemon: 1,
+    },
+    update: {},
+  });
 }
 
 main()
