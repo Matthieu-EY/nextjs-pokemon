@@ -1,7 +1,7 @@
 /**
  * Poke API Implementation
  */
-import { fetchPOKE } from '.';
+import { fetchPoke } from '.';
 import { ExternalResource, PokePaginatedResponse } from './dto/common';
 import { Pokemon, PokemonSpecies } from './dto/pokemon';
 
@@ -16,7 +16,7 @@ export const pokemonApi = {
    * @returns A list of pokemon (name and url only, to get full details on each pokemon, getByID is necessary)
    */
   listPokemon: (offset: number, limit: number) =>
-    fetchPOKE<PokePaginatedResponse<ExternalResource>>({
+    fetchPoke<PokePaginatedResponse<ExternalResource>>({
       path: `/api/v2/pokemon?offset=${offset}&limit=${limit}`,
     }),
 
@@ -26,7 +26,7 @@ export const pokemonApi = {
    * @returns The Pokemon
    */
   getPokeById: (id: number) =>
-    fetchPOKE<Pokemon>({
+    fetchPoke<Pokemon>({
       path: `/api/v2/pokemon/${id}`,
     }),
 };
@@ -38,7 +38,7 @@ export const speciesApi = {
    * @returns The species: type,
    */
   getSpeciesById: (id: number) =>
-    fetchPOKE<PokemonSpecies>({
+    fetchPoke<PokemonSpecies>({
       path: `/api/v2/pokemon-species/${id}`,
     }),
 };

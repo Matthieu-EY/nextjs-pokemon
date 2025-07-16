@@ -14,7 +14,7 @@ const POKE_API_URL = env.POKE_API_URL;
  * @param options - Request options
  * @returns The response data
  */
-export async function fetchPOKE<T>({
+export async function fetchPoke<T>({
   path,
   params = {},
   method = 'GET',
@@ -56,5 +56,5 @@ export async function fetchPOKE<T>({
  * Default export for easier importing
  */
 export default {
-  fetch: fetchPOKE,
+  fetch: fetchPoke,
 };
