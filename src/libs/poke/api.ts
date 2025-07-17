@@ -16,19 +16,16 @@ export const pokemonApi = {
    * @returns A list of pokemon (name and url only, to get full details on each pokemon, getByID is necessary)
    */
   listPokemon: (offset: number, limit: number) =>
-    fetchPoke<PokePaginatedResponse<ExternalResource>>({
-      path: `/api/v2/pokemon?offset=${offset}&limit=${limit}`,
-    }),
+    fetchPoke<PokePaginatedResponse<ExternalResource>>(
+      `/api/v2/pokemon?offset=${offset}&limit=${limit}`,
+    ),
 
   /**
    * Get Pokemon By ID
    * @param id Id of the pokemon
    * @returns The Pokemon
    */
-  getPokeById: (id: number) =>
-    fetchPoke<Pokemon>({
-      path: `/api/v2/pokemon/${id}`,
-    }),
+  getPokeById: (id: number) => fetchPoke<Pokemon>(`/api/v2/pokemon/${id}`),
 };
 
 export const speciesApi = {
@@ -37,10 +34,7 @@ export const speciesApi = {
    * @param id Id of the species
    * @returns The species: information about this particular species of pokemon: type, forms, ...
    */
-  getSpeciesById: (id: number) =>
-    fetchPoke<PokemonSpecies>({
-      path: `/api/v2/pokemon-species/${id}`,
-    }),
+  getSpeciesById: (id: number) => fetchPoke<PokemonSpecies>(`/api/v2/pokemon-species/${id}`),
 };
 
 export const typeApi = {
@@ -49,10 +43,7 @@ export const typeApi = {
    * @param id Id of the type
    * @returns The type: normal, fighting, ...
    */
-  getTypeById: (id: number) =>
-    fetchPoke<PokemonType>({
-      path: `/api/v2/type/${id}`,
-    }),
+  getTypeById: (id: number) => fetchPoke<PokemonType>(`/api/v2/type/${id}`),
   
   /**
    * Get type by Name
@@ -60,9 +51,7 @@ export const typeApi = {
    * @returns The type: normal, fighting, ...
    */
   getTypeByName: (name: string) =>
-    fetchPoke<PokemonType>({
-      path: `/api/v2/type/${name}`,
-    }),
+    fetchPoke<PokemonType>(`/api/v2/type/${name}`),
 }
 
 const pokeApi = {
