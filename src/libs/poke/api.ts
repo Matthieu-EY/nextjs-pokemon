@@ -3,7 +3,7 @@
  */
 import { fetchPoke } from '.';
 import { ExternalResource, PokePaginatedResponse } from './dto/common';
-import { Pokemon, PokemonSpecies } from './dto/pokemon';
+import { Pokemon, PokemonSpecies, PokemonType } from './dto/pokemon';
 
 /**
  * API Methods
@@ -35,7 +35,7 @@ export const speciesApi = {
   /**
    * Get Pokemon Species By ID
    * @param id Id of the species
-   * @returns The species: type,
+   * @returns The species: information about this particular species of pokemon: type, forms, ...
    */
   getSpeciesById: (id: number) =>
     fetchPoke<PokemonSpecies>({
@@ -43,9 +43,32 @@ export const speciesApi = {
     }),
 };
 
+export const typeApi = {
+  /**
+   * Get type by ID
+   * @param id Id of the type
+   * @returns The type: normal, fighting, ...
+   */
+  getTypeById: (id: number) =>
+    fetchPoke<PokemonType>({
+      path: `/api/v2/type/${id}`,
+    }),
+  
+  /**
+   * Get type by Name
+   * @param name Name of the type
+   * @returns The type: normal, fighting, ...
+   */
+  getTypeByName: (name: string) =>
+    fetchPoke<PokemonType>({
+      path: `/api/v2/type/${name}`,
+    }),
+}
+
 const pokeApi = {
   pokemon: pokemonApi,
   species: speciesApi,
+  type: typeApi,
 };
 
 export default pokeApi;
