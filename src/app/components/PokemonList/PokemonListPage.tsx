@@ -7,36 +7,17 @@ import { parseUrlAndGetParam } from "~/utils/get-token-from-url";
 import { PokemonCard } from "./PokemonCard";
 import { useState } from "react";
 import { throttle } from "~/utils/ratelimit";
+import { Type } from "~/libs/poke/dto/common";
+import { PokemonSearch } from "./PokemonSearch";
+import { PokemonListType } from "./PokemonListType";
 
 const FETCH_LIMIT_POKEMONS = 50;
-
-const types = [
-  'normal',
-  'fighting',
-  'flying',
-  'poison',
-  'ground',
-  'rock',
-  'bug',
-  'ghost',
-  'steel',
-  'fire',
-  'water',
-  'grass',
-  'electric',
-  'psychic',
-  'ice',
-  'dragon',
-  'dark',
-  'fairy',
-] as const;
-type Type = (typeof types)[number];
 
 interface PokemonListProps {
   initialPokemons?: Pokemon[];
 }
 
-export function PokemonList({ initialPokemons = [] }: PokemonListProps) {
+export function PokemonListPage({ initialPokemons = [] }: PokemonListProps) {
   // name inside "search by name" input
   const [searchedName, setSearchedName] = useState('');
   const [searchedType, setSearchedType] = useState<Type | 'All'>('All');
@@ -90,40 +71,20 @@ export function PokemonList({ initialPokemons = [] }: PokemonListProps) {
         pokemon?.types.some((type) => type.type.name === searchedType)),
   );
 
+  if (searchedType !== "All") {
+    return (<PokemonListType searchedName={searchedName} setSearchedName={setSearchedName} searchedType={searchedType} setSearchedType={setSearchedType} />)
+  }
+
   return (
     <div className="flex flex-col bg-gray-800 py-8">
         <h1 className="w-full text-center text-4xl font-bold">Pokédex</h1>
 
-        <div className="flex flew-row justify-around">
-          <div className="flex flex-col justify-center items-center">
-            <p>Search by name</p>
-            <input
-              name="name_search"
-              type="text"
-              placeholder="Pikachu"
-              defaultValue={searchedName}
-              onChange={(e) => setSearchedName(e.target.value)}
-              className=" bg-gray-700 border-gray-600 rounded-lg min-w-[200px] px-2"
-            />
-          </div>
-
-          <div className="flex flex-col justify-center items-center">
-            <p>Search by type</p>
-            <select
-              defaultValue="All"
-              onChange={(e) => setSearchedType(e.target.value as Type | 'All')}
-            >
-              <option value="All" defaultChecked>
-                All
-              </option>
-              {types.map((type, index) => (
-                <option key={index} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
+        <PokemonSearch 
+          searchedName={searchedName}
+          setSearchedName={setSearchedName}
+          searchedType={searchedType}
+          setSearchedType={setSearchedType}
+        />
 
         <div className="mt-4 grid justify-center items-center content-center justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,150px)] auto-rows-auto gap-4">
           {filteredPokemons.map((pokemon, index) => (

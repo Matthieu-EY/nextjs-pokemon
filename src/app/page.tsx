@@ -1,6 +1,6 @@
 import { serverTrpc } from './_trpc/server';
 import { DefaultLayout } from './components/DefaultLayout';
-import { PokemonList } from './components/PokemonList/PokemonList';
+import { PokemonListPage } from './components/PokemonList/PokemonListPage';
 
 export default async function HomePage() {
   const initialPokemons = await Promise.all(
@@ -9,7 +9,7 @@ export default async function HomePage() {
 
   return (
     <DefaultLayout>
-      <PokemonList 
+      <PokemonListPage 
         initialPokemons={initialPokemons} 
       />
     </DefaultLayout>
