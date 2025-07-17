@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { DefaultLayout } from '../../components/DefaultLayout';
 import { serverTrpc } from '~/app/_trpc/server';
 import { PokemonDetail } from '~/app/components/Pokemon/Pokemon';
-import { getIdFromUrl } from '~/utils/get-token-from-url';
+import { parseUrlAndGetParamInt } from '~/utils/parse-url';
 
 export default async function PokemonDetailPage({
   params,
@@ -16,10 +16,10 @@ export default async function PokemonDetailPage({
   try {
     const pokemon = await serverTrpc.poke.getPokemonById({ id });
 
-    const speciesId = getIdFromUrl(pokemon.species.url, 30);
+    const speciesId = parseUrlAndGetParamInt(pokemon.species.url);
     const species = await serverTrpc.poke.getSpeciesById({ id: speciesId });
 
-    const evolutionChainID = getIdFromUrl(species.evolution_chain.url, 30);
+    const evolutionChainID = parseUrlAndGetParamInt(species.evolution_chain.url);
     const evolution_chain = await serverTrpc.poke.getEvolutionById({
       id: evolutionChainID,
     });
@@ -29,7 +29,7 @@ export default async function PokemonDetailPage({
       .sort((move1, move2) => move1.version_group_details[0].level_learned_at - move2.version_group_details[0].level_learned_at)
       .map((move) => {
         return { 
-          id: getIdFromUrl(move.move.url, 30),
+          id: parseUrlAndGetParamInt(move.move.url),
           level: move.version_group_details[0].level_learned_at,
         }
       });

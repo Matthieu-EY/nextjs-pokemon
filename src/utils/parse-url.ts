@@ -1,12 +1,3 @@
-/*
-export function getTokenFromUrl(url: string, index: number) {
-  const tokens = url.split(/[/?=&]+/).filter((value) => value.trim() !== '');
-  if (tokens.length <= 0 || index < 0) return '';
-  if (index > tokens.length) return tokens[tokens.length - 1];
-  return tokens[index];
-}
-*/
-
 export function parseUrlAndGetParam(url: string, paramName?: string) {
   const parsed = URL.parse(url);
   if (parsed == null) return '';
@@ -15,4 +6,8 @@ export function parseUrlAndGetParam(url: string, paramName?: string) {
     .split(/[/?=&]+/)
     .filter((value) => value.trim() !== '');
   return tokens[tokens.length - 1];
+}
+
+export function parseUrlAndGetParamInt(url: string, paramName?: string) {
+  return parseInt(parseUrlAndGetParam(url, paramName) ?? "", 10);
 }
