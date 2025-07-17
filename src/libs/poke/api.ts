@@ -1,9 +1,9 @@
 /**
  * Poke API Implementation
  */
-import { fetchPOKE } from '.';
+import { fetchPoke } from '.';
 import { ExternalResource, PokePaginatedResponse } from './dto/common';
-import { Pokemon, PokemonEvolutionChain, PokemonMove, PokemonSpecies } from './dto/pokemon';
+import { Pokemon, PokemonEvolutionChain, PokemonMove, PokemonSpecies, PokemonType } from './dto/pokemon';
 
 /**
  * API Methods
@@ -16,41 +16,33 @@ export const pokemonApi = {
    * @returns A list of pokemon (name and url only, to get full details on each pokemon, getByID is necessary)
    */
   listPokemon: (offset: number, limit: number) =>
-    fetchPOKE<PokePaginatedResponse<ExternalResource>>({
-      path: `/api/v2/pokemon?offset=${offset}&limit=${limit}`,
-    }),
+    fetchPoke<PokePaginatedResponse<ExternalResource>>(
+      `/api/v2/pokemon?offset=${offset}&limit=${limit}`,
+    ),
 
   /**
    * Get Pokemon By ID
    * @param id Id of the pokemon
    * @returns The Pokemon
    */
-  getPokeById: (id: number) =>
-    fetchPOKE<Pokemon>({
-      path: `/api/v2/pokemon/${id}`,
-    }),
+  getPokeById: (id: number) => fetchPoke<Pokemon>(`/api/v2/pokemon/${id}`),
   
   /**
    * Get Pokemon By Name
    * @param name Name of the pokemon (english)
    * @returns The Pokemon
    */
-  getPokeByName: (name: string) =>
-    fetchPOKE<Pokemon>({
-      path: `/api/v2/pokemon/${name}`,
-    }),
+  getPokeByName: (name: string) => fetchPoke<Pokemon>(`/api/v2/pokemon/${name}`),
+  
 };
 
 export const speciesApi = {
   /**
    * Get Pokemon Species By ID
    * @param id Id of the species
-   * @returns The species: type,
+   * @returns The species: information about this particular species of pokemon: type, forms, ...
    */
-  getSpeciesById: (id: number) =>
-    fetchPOKE<PokemonSpecies>({
-      path: `/api/v2/pokemon-species/${id}`,
-    }),
+  getSpeciesById: (id: number) => fetchPoke<PokemonSpecies>(`/api/v2/pokemon-species/${id}`),
 };
 
 export const evolutionApi = {
@@ -60,9 +52,7 @@ export const evolutionApi = {
    * @returns 
    */
   getEvolutionById: (id: number) =>
-    fetchPOKE<PokemonEvolutionChain>({
-      path: `/api/v2/evolution-chain/${id}`,
-    }),
+    fetchPoke<PokemonEvolutionChain>(`/api/v2/evolution-chain/${id}`),
 };
 
 export const moveApi = {
@@ -72,16 +62,31 @@ export const moveApi = {
    * @returns The move
    */
   getMoveById: (id: number) =>
-    fetchPOKE<PokemonMove>({
-      path: `/api/v2/move/${id}`,
-    }),
+    fetchPoke<PokemonMove>(`/api/v2/move/${id}`),
 };
+export const typeApi = {
+  /**
+   * Get type by ID
+   * @param id Id of the type
+   * @returns The type: normal, fighting, ...
+   */
+  getTypeById: (id: number) => fetchPoke<PokemonType>(`/api/v2/type/${id}`),
+  
+  /**
+   * Get type by Name
+   * @param name Name of the type
+   * @returns The type: normal, fighting, ...
+   */
+  getTypeByName: (name: string) =>
+    fetchPoke<PokemonType>(`/api/v2/type/${name}`),
+}
 
 const pokeApi = {
   pokemon: pokemonApi,
   species: speciesApi,
   evolution: evolutionApi,
   move: moveApi,
+  type: typeApi,
 };
 
 export default pokeApi;
