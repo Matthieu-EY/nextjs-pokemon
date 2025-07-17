@@ -2,11 +2,14 @@ import { useCallback, useRef } from 'react';
 
 export function useScrollRef<T>(
   onIntersect: (entry: IntersectionObserverEntry) => T,
+  isLoading?: () => boolean,
 ) {
   const scrollObserver = useRef<IntersectionObserver>(null);
 
   const observedRef = useCallback(
     (node: HTMLButtonElement) => {
+      if (isLoading?.()) return;
+
       if (scrollObserver.current) scrollObserver.current.disconnect();
 
       scrollObserver.current = new IntersectionObserver((entries) => {
@@ -18,7 +21,7 @@ export function useScrollRef<T>(
 
       if (node) scrollObserver.current.observe(node);
     },
-    [onIntersect],
+    [onIntersect, isLoading],
   );
 
   return observedRef;
