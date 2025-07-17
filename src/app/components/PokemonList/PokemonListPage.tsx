@@ -1,23 +1,24 @@
 'use client';
 
-import { trpc } from "~/app/_trpc/client";
-import { useScrollRef } from "~/app/hooks/useScrollRef";
-import { Pokemon } from "~/libs/poke/dto/pokemon";
-import { parseUrlAndGetParam } from "~/utils/get-token-from-url";
-import { PokemonCard } from "./PokemonCard";
-import { useState } from "react";
-import { throttle } from "~/utils/ratelimit";
-import { Type } from "~/libs/poke/dto/common";
-import { PokemonSearch } from "./PokemonSearch";
-import { PokemonListType } from "./PokemonListType";
+import { trpc } from '~/app/_trpc/client';
+import { useScrollRef } from '~/app/hooks/useScrollRef';
+import { Pokemon } from '~/libs/poke/dto/pokemon';
+import { PokemonCard } from './PokemonCard';
+import { useState } from 'react';
+import { throttle } from '~/utils/ratelimit';
+import { ExternalResource, PokePaginatedResponse, Type } from '~/libs/poke/dto/common';
+import { PokemonSearch } from './PokemonSearch';
+import { PokemonListType } from './PokemonListType';
+import { parseUrlAndGetParam } from '~/utils/get-token-from-url';
 
 const FETCH_LIMIT_POKEMONS = 50;
 
 interface PokemonListProps {
-  initialPokemons?: Pokemon[];
+  initialPokemonList: PokePaginatedResponse<ExternalResource>
+  initialPokemonDetails: Record<string, Pokemon>;
 }
 
-export function PokemonListPage({ initialPokemons = [] }: PokemonListProps) {
+export function PokemonListPage({ initialPokemonList, initialPokemonDetails }: PokemonListProps) {
   // name inside "search by name" input
   const [searchedName, setSearchedName] = useState('');
   const [searchedType, setSearchedType] = useState<Type | 'All'>('All');
@@ -27,6 +28,10 @@ export function PokemonListPage({ initialPokemons = [] }: PokemonListProps) {
       limit: FETCH_LIMIT_POKEMONS,
     },
     {
+      initialData: {
+        pageParams: [],
+        pages: [initialPokemonList]
+      },
       getNextPageParam(lastPage) {
         if (lastPage.next == null) return null;
         const nextCursor = parseUrlAndGetParam(lastPage.next, 'offset');
@@ -51,18 +56,11 @@ export function PokemonListPage({ initialPokemons = [] }: PokemonListProps) {
         ),
       )
       .flat() ?? [];
-  const pokemonsTrpc = trpc.useQueries(
-    (t) => pokeIds.map((id) => t.poke.getPokemonById({ id })),
+  const pokemonsTrpc = trpc.useQueries((t) =>
+    pokeIds.map((id) => t.poke.getPokemonById({ id }, { initialData: initialPokemonDetails[id] })),
   );
 
-  const queryNotFinished = pokemonsQuery?.data?.pages?.[0]?.results == undefined;
-  const PokemonDetailsNotAllFetchedForFirstRender = pokemonsQuery?.data?.pages.length === 1 && pokemonsTrpc.some((pokemonTrpc) => pokemonTrpc.status === "pending");
-  // if first render, load initialPokemons
-  // When useInfiniteQuery catches up, replace the initialPokemons with the new ones.
-  const pokemons = queryNotFinished || PokemonDetailsNotAllFetchedForFirstRender ? initialPokemons : 
-    pokemonsTrpc.map((poke) => poke.data).filter((poke) => poke != null);
-
-  const filteredPokemons = pokemons.filter(
+  const filteredPokemons = pokemonsTrpc.map((poke) => poke.data).filter(
     (pokemon: Pokemon | undefined): pokemon is Pokemon =>
       pokemon != undefined &&
       (searchedName === '' ||

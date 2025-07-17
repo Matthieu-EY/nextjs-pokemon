@@ -8,7 +8,7 @@ import { publicProcedure, router } from '~/server/trpc';
 
 export const pokeRouter = router({
   /**
-   * List pokemons
+   * List pokemons details 
    */
   list: publicProcedure
     .input(

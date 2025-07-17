@@ -1,16 +1,27 @@
 import { serverTrpc } from './_trpc/server';
 import { DefaultLayout } from './components/DefaultLayout';
 import { PokemonListPage } from './components/PokemonList/PokemonListPage';
+import { parseUrlAndGetParamInt } from '../utils/parse-url';
+import { Pokemon } from '~/libs/poke/dto/pokemon';
 
 export default async function HomePage() {
-  const initialPokemons = await Promise.all(
-    Array.from({length: 50}, (_,i) => i+1).map((id) => serverTrpc.poke.getPokemonById({ id }))
+  const firstPokemons = await serverTrpc.poke.list({ limit: 50 })
+  const firstPokemonDetailsResponse = await Promise.all(
+    firstPokemons.results.map((pokemon) => serverTrpc.poke.getPokemonById({ id: parseUrlAndGetParamInt(pokemon.url)}))
   );
+
+  const firstPokemonDetailsById = firstPokemonDetailsResponse.reduce((acc, curr) => {
+    return {
+      ...acc,
+      [curr.id]: curr
+    }
+  }, {} as Record<string, Pokemon>)
 
   return (
     <DefaultLayout>
-      <PokemonListPage 
-        initialPokemons={initialPokemons} 
+      <PokemonListPage
+        initialPokemonList={firstPokemons}
+        initialPokemonDetails={firstPokemonDetailsById} 
       />
     </DefaultLayout>
   );
