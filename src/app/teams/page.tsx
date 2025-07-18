@@ -2,8 +2,13 @@ import { DefaultLayout } from "~/components/DefaultLayout";
 import { TeamsList } from "../components/Team/TeamsList";
 import { serverTrpc } from "../_trpc/server";
 
+interface TeamsPageProps {
+  searchParams?: Promise<Record<string, string> | null | undefined>;
+}
 
-export default async function TeamsPage() {
+export default async function TeamsPage({ searchParams }: TeamsPageProps) {
+  const team_modal_shown = (await searchParams)?.team_modal;
+
   const teams = await serverTrpc.team.list({});
 
   const idPokemonsTeams = teams.map((team) => team.pokemons.map((poke) => poke.idPokemon));
@@ -25,7 +30,7 @@ export default async function TeamsPage() {
 
   return (
     <DefaultLayout>
-      <TeamsList teams={teamsWithPokemons} />
+      <TeamsList teams={teamsWithPokemons} team_modal_shown={team_modal_shown == "true"} />
     </DefaultLayout>
   )
 }
