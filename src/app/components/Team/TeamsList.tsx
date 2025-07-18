@@ -1,9 +1,10 @@
 import { PokemonCombat, Team } from '@prisma/client';
 import Link from 'next/link';
 import { TeamCard } from './TeamCard';
+import { Pokemon } from '~/libs/poke/dto/pokemon';
 
 export interface TeamFull extends Omit<Team, 'createdAt' | 'updatedAt'> {
-  pokemons: PokemonCombat[];
+  pokemons: (PokemonCombat & Pokemon)[];
 }
 
 interface TeamsListProps {
@@ -20,7 +21,7 @@ export function TeamsList({ teams }: TeamsListProps) {
         Teams
       </h1>
 
-      <div>
+      <div className='min-w-fit'>
         <div className="mt-4 grid justify-center items-center content-center justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,350px)] auto-rows-auto gap-4">
           {teams.map((team) => (
             <TeamCard key={team.id} team={team} />
