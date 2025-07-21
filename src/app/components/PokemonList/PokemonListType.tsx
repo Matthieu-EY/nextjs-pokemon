@@ -36,27 +36,25 @@ export function PokemonListType({
     (pokemon: Pokemon | undefined): pokemon is Pokemon =>
       pokemon != undefined &&
       (searchedName === '' ||
-        new RegExp(searchedName, 'i').exec(pokemon?.name) != null) &&
-      (searchedType === 'All' ||
-        pokemon?.types.some((type) => type.type.name === searchedType)),
+        new RegExp(searchedName, 'i').exec(pokemon?.name) != null),
   );
 
   return (
     <div className="flex flex-col bg-gray-800 py-8">
-      <h1 className="w-full text-center text-4xl font-bold">Pokédex</h1>
+        <h1 className="w-full text-center text-4xl font-bold">Pokédex</h1>
 
-      <PokemonSearch
-        searchedName={searchedName}
-        setSearchedName={setSearchedName}
-        searchedType={searchedType}
-        setSearchedType={setSearchedType}
-      />
+        <PokemonSearch 
+          searchedName={searchedName}
+          setSearchedName={setSearchedName}
+          searchedType={searchedType}
+          setSearchedType={setSearchedType}
+        />
 
-      <div className="mt-4 grid justify-center items-center content-center justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,150px)] auto-rows-auto gap-4">
-        {filteredPokemons.map((pokemon, index) => (
-          <PokemonCard key={index + 1} pokemon={pokemon} />
-        ))}
+        <div className="mt-4 grid justify-center items-center content-center justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,150px)] auto-rows-auto gap-4">
+          {filteredPokemons.map((pokemon) => (
+            <PokemonCard key={pokemon.id} pokemon={pokemon} />
+          ))}
+        </div>
       </div>
-    </div>
-  );
+  )
 }

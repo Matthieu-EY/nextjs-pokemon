@@ -1,9 +1,10 @@
+import { PropsWithChildren } from 'react';
+
 interface PokemonInfoProps {
   name: string;
-  children: React.ReactNode;
 }
 
-function PokemonInfo({ name, children }: PokemonInfoProps) {
+function PokemonInfo({ name, children }: PropsWithChildren<PokemonInfoProps>) {
   return (
     <div className="min-w-[100px] max-w-fit max-h-fit flex flex-col justify-center items-center rounded-lg p-2 bg-stone-400">
       <p>{name}</p>

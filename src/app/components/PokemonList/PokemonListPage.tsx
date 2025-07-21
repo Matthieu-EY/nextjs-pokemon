@@ -30,7 +30,7 @@ export function PokemonListPage({ initialPokemonList, initialPokemonDetails }: P
     {
       initialData: {
         pageParams: [],
-        pages: [initialPokemonList]
+        pages: [initialPokemonList],
       },
       getNextPageParam(lastPage) {
         if (lastPage.next == null) return null;
@@ -50,7 +50,7 @@ export function PokemonListPage({ initialPokemonList, initialPokemonDetails }: P
     }
   };
 
-  const observedRef = useScrollRef(throttle(() => onScroll(), 800));
+  const observedRef = useScrollRef(throttle(() => void onScroll(), 800));
 
   const pokeIds =
     pokemonsQuery.data?.pages
@@ -66,9 +66,7 @@ export function PokemonListPage({ initialPokemonList, initialPokemonDetails }: P
     (pokemon: Pokemon | undefined): pokemon is Pokemon =>
       pokemon != undefined &&
       (searchedName === '' ||
-        new RegExp(searchedName, 'i').exec(pokemon?.name) != null) &&
-      (searchedType === 'All' ||
-        pokemon?.types.some((type) => type.type.name === searchedType)),
+        new RegExp(searchedName, 'i').exec(pokemon?.name) != null),
   );
 
   if (searchedType !== 'All') {
@@ -94,8 +92,8 @@ export function PokemonListPage({ initialPokemonList, initialPokemonDetails }: P
       />
 
       <div className="mt-4 grid justify-center items-center content-center justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,150px)] auto-rows-auto gap-4">
-        {filteredPokemons.map((pokemon, index) => (
-          <PokemonCard key={index + 1} pokemon={pokemon} />
+        {filteredPokemons.map((pokemon) => (
+          <PokemonCard key={pokemon.id} pokemon={pokemon} />
         ))}
       </div>
 

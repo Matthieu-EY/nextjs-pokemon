@@ -90,6 +90,20 @@ export const pokeRouter = router({
     .query(async ({ input }) => {
       return await pokeApi.move.getMoveById(input.id);
       
+      
+    }),
+  
+  /**
+   * Get Type By ID
+   */
+  getTypeById: publicProcedure
+    .input(
+      z.object({
+        id: z.number().min(0),
+      }),
+    )
+    .query(async ({ input }) => {
+      return await pokeApi.type.getTypeById(input.id);
     }),
   
   /**
@@ -103,18 +117,5 @@ export const pokeRouter = router({
     )
     .query(async ({ input}) => {
       return await pokeApi.type.getTypeByName(input.name);
-    }),
-  
-  /*
-   * Get Type By ID
-   */
-  getTypeById: publicProcedure
-    .input(
-      z.object({
-        id: z.number().min(0),
-      }),
-    )
-    .query(async ({ input }) => {
-      return await pokeApi.type.getTypeById(input.id);
     }),
 });
