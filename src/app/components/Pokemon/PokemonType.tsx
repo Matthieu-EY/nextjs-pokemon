@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { Indexable } from '~/libs/poke/dto/common';
 import type { PokemonType } from '~/libs/poke/dto/pokemon';
 
@@ -31,7 +32,7 @@ export function PokemonTypeFC({ type }: PokemonType) {
         backgroundImage: `linear-gradient(105deg,${colors[type.name]} 42px,#5A5A5A 31px,#5A5A5A)`,
       }}
     >
-      <img src={`/types/${type.name}.png`} className="max-w-[30px]" />
+      <Image src={`/types/${type.name}.png`} alt={type.name} className="max-w-[30px]" />
       <p className="text-xl capitalize font-nowrap">{type.name}</p>
     </div>
   );

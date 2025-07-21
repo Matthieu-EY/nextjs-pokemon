@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Pokemon } from "~/libs/poke/dto/pokemon";
 
@@ -14,8 +15,9 @@ export function PokemonCard({ pokemon }: PokemonCardProps) {
         {pokemon?.name}
       </h2>
       {pokemon?.sprites.front_default && (
-        <img
+        <Image
           src={pokemon?.sprites.front_default ?? ''}
+          alt={pokemon.name}
           className="max-w-[80px]"
         />
       )}

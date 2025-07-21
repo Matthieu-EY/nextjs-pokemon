@@ -58,7 +58,7 @@ export function PokemonDisplay({ name, sprites, types }: PokemonDisplayProps) {
               role="button"
               className="bg-stone-400 rounded-full cursor-pointer"
             >
-              <img src="/turn.png" className="w-[50px]" />
+              <Image src="/turn.png" alt='Turn Pokemon' className="w-[50px]" />
             </button>
           )}
         </div>
