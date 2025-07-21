@@ -19,7 +19,7 @@ function PokemonDetail({ pokemon }: PokemonProps) {
         {pokemon.name}
       </h1>
 
-      <PokemonDisplay sprites={pokemon.sprites} types={pokemon.types} />
+      <PokemonDisplay {...pokemon} />
 
       <div className="flex flex-row justify-center gap-x-4">
         <PokemonInfo name="Height">

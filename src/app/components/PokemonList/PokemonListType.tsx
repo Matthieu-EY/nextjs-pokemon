@@ -28,9 +28,7 @@ export function PokemonListType({ searchedName, setSearchedName, searchedType, s
     (pokemon: Pokemon | undefined): pokemon is Pokemon =>
       pokemon != undefined &&
       (searchedName === '' ||
-        new RegExp(searchedName, 'i').exec(pokemon?.name) != null) &&
-      (searchedType === 'All' ||
-        pokemon?.types.some((type) => type.type.name === searchedType)),
+        new RegExp(searchedName, 'i').exec(pokemon?.name) != null),
   );
 
   return (
@@ -45,8 +43,8 @@ export function PokemonListType({ searchedName, setSearchedName, searchedType, s
         />
 
         <div className="mt-4 grid justify-center items-center content-center justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,150px)] auto-rows-auto gap-4">
-          {filteredPokemons.map((pokemon, index) => (
-            <PokemonCard key={index + 1} pokemon={pokemon} />
+          {filteredPokemons.map((pokemon) => (
+            <PokemonCard key={pokemon.id} pokemon={pokemon} />
           ))}
         </div>
       </div>
