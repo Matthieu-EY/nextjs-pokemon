@@ -13,7 +13,6 @@ export function useScrollRef<T>(
       if (scrollObserver.current) scrollObserver.current.disconnect();
 
       scrollObserver.current = new IntersectionObserver((entries) => {
-        // IIFE defined to avoid the constraints of the callback function, which cannot be async
         if (entries[0].isIntersecting) {
           onIntersect(entries[0]);
         }

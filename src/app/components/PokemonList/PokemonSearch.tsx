@@ -28,6 +28,10 @@ interface PokemonSearchProps {
   setSearchedType: React.Dispatch<React.SetStateAction<Type | "All">>;
 }
 
+const isSearchedType = (str: string): str is Type => {
+  return types.findIndex(((type) => type === str)) !== -1;
+}
+
 export function PokemonSearch({ searchedName, setSearchedName, searchedType, setSearchedType }: PokemonSearchProps) {
   return (
     <div className="flex flew-row justify-around">
@@ -47,7 +51,7 @@ export function PokemonSearch({ searchedName, setSearchedName, searchedType, set
         <p>Search by type</p>
         <select
           defaultValue={searchedType ?? "All"}
-          onChange={(e) => setSearchedType(e.target.value as Type | 'All')}
+          onChange={(e) => setSearchedType(isSearchedType(e.target.value) ? e.target.value : "All")}
         >
           <option value="All" defaultChecked>
             All
