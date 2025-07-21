@@ -48,7 +48,7 @@ export function TeamsList({ initTeams, team_modal_shown }: TeamsListProps) {
       </h1>
 
       <div className="w-full">
-        <div className="mt-4 flex-row grid justify-center items-center content-center justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,400px)] auto-rows-auto gap-4">
+        <div className="my-4 flex-row grid justify-center items-center content-center justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,400px)] auto-rows-auto gap-4">
           {optimisticTeams.map((team) => (
             <TeamCard key={team.id} team={team} />
           ))}

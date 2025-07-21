@@ -23,15 +23,17 @@ export function PokemonDisplay({ name, sprites, types }: PokemonDisplayProps) {
 
   return (
     <div className="w-[80%] m-auto flex flex-col justify-center items-center">
-      <Image
-        src={sprites[sprite_name]!}
-        alt={name}
-        width={400}
-        height={400}
-        priority
-        objectFit='contain'
-        className="w-full max-w-[400px]"
-      />
+      {sprites[sprite_name] && (
+        <Image
+          src={sprites[sprite_name]}
+          alt={name}
+          width={400}
+          height={400}
+          priority
+          objectFit="contain"
+          className="w-full max-w-[400px]"
+        />
+      )}
 
       <div className="w-[50%] flex flex-row justify-around mb-4">
         {types.map((type) => (
@@ -62,7 +64,13 @@ export function PokemonDisplay({ name, sprites, types }: PokemonDisplayProps) {
               role="button"
               className="bg-stone-400 rounded-full cursor-pointer"
             >
-              <Image src="/turn.png" alt='Turn Pokemon' width={50} height={50} className="w-[50px]" />
+              <Image
+                src="/turn.png"
+                alt="Turn Pokemon"
+                width={50}
+                height={50}
+                className="w-[50px]"
+              />
             </button>
           )}
         </div>
