@@ -32,7 +32,7 @@ export function PokemonTypeFC({ type }: PokemonType) {
         backgroundImage: `linear-gradient(105deg,${colors[type.name]} 42px,#5A5A5A 31px,#5A5A5A)`,
       }}
     >
-      <Image src={`/types/${type.name}.png`} alt={type.name} className="max-w-[30px]" />
+      <Image src={`/types/${type.name}.png`} alt={type.name} width={30} height={30} className="max-w-[30px]" />
       <p className="text-xl capitalize font-nowrap">{type.name}</p>
     </div>
   );

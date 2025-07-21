@@ -18,6 +18,8 @@ export function PokemonCard({ pokemon }: PokemonCardProps) {
         <Image
           src={pokemon?.sprites.front_default ?? ''}
           alt={pokemon.name}
+          width={80}
+          height={80}
           className="max-w-[80px]"
         />
       )}

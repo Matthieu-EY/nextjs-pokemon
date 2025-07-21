@@ -21,4 +21,9 @@ export default {
   typescript: {
     ignoreBuildErrors: true,
   },
+  images: {
+    remotePatterns: [
+      new URL("https://raw.githubusercontent.com/**"),
+    ]
+  }
 } satisfies NextConfig;

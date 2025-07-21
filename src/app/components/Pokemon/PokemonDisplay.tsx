@@ -26,6 +26,10 @@ export function PokemonDisplay({ name, sprites, types }: PokemonDisplayProps) {
       <Image
         src={sprites[sprite_name]!}
         alt={name}
+        width={400}
+        height={400}
+        priority
+        objectFit='contain'
         className="w-full max-w-[400px]"
       />
 
@@ -58,7 +62,7 @@ export function PokemonDisplay({ name, sprites, types }: PokemonDisplayProps) {
               role="button"
               className="bg-stone-400 rounded-full cursor-pointer"
             >
-              <Image src="/turn.png" alt='Turn Pokemon' className="w-[50px]" />
+              <Image src="/turn.png" alt='Turn Pokemon' width={50} height={50} className="w-[50px]" />
             </button>
           )}
         </div>
