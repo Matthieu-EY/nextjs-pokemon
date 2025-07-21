@@ -74,7 +74,9 @@ export const teamRouter = router({
     )
     .mutation(async ({ input }) => {
       const team = await prisma.team.create({
-        data: input,
+        data: {
+          name: input.name,
+        },
         select: defaultTeamSelect,
       });
       return team;
