@@ -30,7 +30,6 @@ export function PokemonDisplay({ name, sprites, types }: PokemonDisplayProps) {
           width={400}
           height={400}
           priority
-          objectFit="contain"
           className="w-full max-w-[400px]"
         />
       )}

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
 import { PokemonCombat, Team } from '@prisma/client';
 import Link from 'next/link';
 import { TeamCard } from './TeamCard';
 import { Pokemon } from '~/libs/poke/dto/pokemon';
 import { TeamModal } from './TeamModal';
-import { useOptimistic, useState } from 'react';
-import { addTeam } from '~/server/actions';
+import { useOptimistic, useState, useTransition } from 'react';
+import { addTeam, invalidateCacheTag } from '~/server/actions';
 
 export interface TeamFull extends Omit<Team, 'createdAt' | 'updatedAt'> {
   pokemons: (PokemonCombat & Pokemon)[];
@@ -18,24 +18,34 @@ interface TeamsListProps {
 }
 
 export function TeamsList({ initTeams, team_modal_shown }: TeamsListProps) {
-  const [teams, setTeams] = useState<TeamFull[]>(initTeams);
-  const [teamModalShown, setTeamModalShown] = useState<boolean>(team_modal_shown ?? false);
-  const [optimisticTeams, addOptimisticTeam] = useOptimistic(teams, (state, newTeam: TeamFull) => {
-    return [...state, newTeam];
-  });
+  const [teamModalShown, setTeamModalShown] = useState<boolean>(
+    team_modal_shown ?? false,
+  );
+  const [optimisticTeams, addOptimisticTeam] = useOptimistic(
+    initTeams,
+    (state, newTeam: TeamFull) => {
+      return [...state, newTeam];
+    },
+  );
 
-  async function onTeamAdd(previousState: unknown, formData: FormData) {
-    setTeamModalShown(false);
-    const name = formData.get("name") as string;
-    const dummyTeam = { id: Math.random() * 100 + 5000, name: name, size: 6, pokemons: [] };
-    addOptimisticTeam(dummyTeam);
-    const newTeam = await addTeam(name);
-    const newTeamFull: TeamFull = {
-      ...newTeam,
-      pokemons: [],
-    }
-    setTeams([...teams, newTeamFull]);
-    return newTeam.name ?? "";
+  const [_, startTransition] = useTransition();
+
+  function onTeamAdd(previousState: unknown, formData: FormData) {
+    const name = formData.get('name') as string;
+
+    startTransition(async () => {
+      setTeamModalShown(false);
+      const dummyTeam = {
+        id: Math.random() * 100 + 5000,
+        name: name,
+        size: 6,
+        pokemons: [],
+      };
+      addOptimisticTeam(dummyTeam);
+      await addTeam(name);
+      await invalidateCacheTag('teamList');
+    });
+    return name ?? '';
   }
 
   return (
@@ -60,7 +70,11 @@ export function TeamsList({ initTeams, team_modal_shown }: TeamsListProps) {
         </div>
       </div>
 
-      {teamModalShown && <TeamModal onTeamAdd={onTeamAdd} onModalClose={() => setTeamModalShown(false)}  />}
+      <TeamModal
+        modalShown={teamModalShown}
+        onTeamAdd={onTeamAdd}
+        onModalClose={() => setTeamModalShown(false)}
+      />
     </div>
   );
 }

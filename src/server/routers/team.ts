@@ -14,6 +14,8 @@ const defaultTeamSelect = {
   name: true,
   size: true,
   pokemons: true,
+  createdAt: true,
+  updatedAt: true,
 } satisfies Prisma.TeamSelect;
 
 export const teamRouter = router({
