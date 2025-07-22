@@ -2,6 +2,7 @@ import './globals.css';
 import { Raleway } from 'next/font/google';
 import type { Metadata } from 'next';
 import { TRPCProvider } from '~/app/_trpc/provider';
+import { Provider } from './components/Provider/Provider';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -21,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={raleway.className}>
       <body className="antialiased">
-        <TRPCProvider>{children}</TRPCProvider>
+        <TRPCProvider>
+          <Provider>{children}</Provider>
+        </TRPCProvider>
       </body>
     </html>
   );
