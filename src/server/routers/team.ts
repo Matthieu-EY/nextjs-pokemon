@@ -33,7 +33,7 @@ export const teamRouter = router({
        * @see https://www.prisma.io/docs/concepts/components/prisma-client/pagination
        */
 
-      const limit = input.limit ?? 50;
+      const limit = input.limit ?? 100;
       const offset = input.offset ?? 0;
 
       const items = await prisma.team.findMany({
@@ -83,4 +83,18 @@ export const teamRouter = router({
       });
       return team;
     }),
+  delete: publicProcedure
+    .input(
+      z.object({
+        id: z.number().min(0),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const deletedTeam = await prisma.team.delete({
+        where: {
+          id: input.id,
+        }
+      });
+      return deletedTeam;
+    })
 });

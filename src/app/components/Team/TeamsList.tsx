@@ -52,7 +52,7 @@ export function TeamsList({ initTeams, team_modal_shown }: TeamsListProps) {
   }
 
   return (
-    <div className="flex flex-col justify-start items-start h-full px-8">
+    <div className="flex flex-col justify-start items-center h-full px-8">
       <Link className="text-gray-300 underline mb-4" href="/">
         Home
       </Link>
@@ -60,7 +60,7 @@ export function TeamsList({ initTeams, team_modal_shown }: TeamsListProps) {
         Teams
       </h1>
 
-      <div className="w-full">
+      <div className="w-[80%] border border-red-700">
         <div className="my-4 flex-row grid justify-center items-center content-center justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,400px)] auto-rows-auto gap-4">
           {optimisticTeams.map((team) => (
             <button
