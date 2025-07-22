@@ -8,7 +8,7 @@ import { publicProcedure, router } from '~/server/trpc';
 
 export const pokeRouter = router({
   /**
-   * List pokemons
+   * List pokemons details 
    */
   list: publicProcedure
     .input(
@@ -21,7 +21,7 @@ export const pokeRouter = router({
       const limit = input.limit ?? 50;
       const { cursor } = input;
 
-      const offset = parseInt(cursor ?? "50", 10);
+      const offset = parseInt(cursor ?? "0", 10);
 
       return await pokeApi.pokemon.listPokemon(offset, limit);
     }),
@@ -50,5 +50,31 @@ export const pokeRouter = router({
     )
     .query(async ({ input }) => {
       return await pokeApi.species.getSpeciesById(input.id);
-    })
+    }),
+  
+  /**
+   * Get Type By ID
+   */
+  getTypeById: publicProcedure
+    .input(
+      z.object({
+        id: z.number().min(0),
+      }),
+    )
+    .query(async ({ input }) => {
+      return await pokeApi.type.getTypeById(input.id);
+    }),
+  
+  /**
+   * Get Type By Name
+   */
+  getTypeByName: publicProcedure
+    .input(
+      z.object({
+        name: z.string(),
+      }),
+    )
+    .query(async ({ input}) => {
+      return await pokeApi.type.getTypeByName(input.name);
+    }),
 });

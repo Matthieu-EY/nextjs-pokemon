@@ -1,12 +1,15 @@
 import { notFound } from 'next/navigation';
 import { DefaultLayout } from '../../components/DefaultLayout';
 import { serverTrpc } from '~/app/_trpc/server';
-import { PokemonRN } from '~/app/components/Pokemon';
-import { getTokenFromUrl } from '~/utils/get-token-from-url';
+import { PokemonDetail } from '~/app/components/Pokemon/Pokemon';
 
-export default async function PokemonDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function PokemonDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id: idParam } = await params;
-  
+
   const id = parseInt(idParam, 10);
 
   try {
@@ -19,7 +22,7 @@ export default async function PokemonDetailPage({ params }: { params: Promise<{ 
 
     return (
       <DefaultLayout>
-        <PokemonRN pokemon={pokemon} />
+        <PokemonDetail pokemon={pokemon} />
       </DefaultLayout>
     );
   } catch {
