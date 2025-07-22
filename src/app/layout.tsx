@@ -3,6 +3,7 @@ import { Raleway } from 'next/font/google';
 import type { Metadata } from 'next';
 import { TRPCProvider } from '~/app/_trpc/provider';
 import { Provider } from './components/Provider/Provider';
+import { TeamBanner } from './components/Team/TeamBanner';
 
 const raleway = Raleway({
   subsets: ['latin'],
@@ -23,7 +24,10 @@ export default function RootLayout({
     <html lang="en" className={raleway.className}>
       <body className="antialiased">
         <TRPCProvider>
-          <Provider>{children}</Provider>
+          <Provider>
+            {children}
+            <TeamBanner />
+          </Provider>
         </TRPCProvider>
       </body>
     </html>

@@ -1,3 +1,4 @@
+import { PokemonPreview } from '../PokemonList/PokemonPreview';
 import { TeamFull } from './TeamsList';
 
 interface TeamCardProps {
@@ -16,20 +17,7 @@ export function TeamCard({ team }: TeamCardProps) {
       <p>{team.name}</p>
       <div className="w-full min-h-[150px] mt-4 grid justify-center items-center content-start justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,100px)] auto-rows-auto gap-4">
         {teamPokemons.map((pokemon, index) => (
-          <div
-            key={pokemon.id ?? index + 1}
-            className="w-[100px] min-h-[110px] px-2 flex flex-col justify-center items-center border border-gray-50 rounded-md bg-gray-600"
-          >
-            {pokemon.idPokemon !== -1 && (
-              <>
-                <p className="capitalize">{pokemon.name}</p>
-                <img
-                  src={pokemon.sprites.front_default!}
-                  className="w-[80px]"
-                />
-              </>
-            )}
-          </div>
+          <PokemonPreview key={pokemon.id ?? index + 1} pokemon={pokemon} />
         ))}
       </div>
     </div>

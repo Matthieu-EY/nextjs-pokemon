@@ -31,7 +31,16 @@ export function TeamsList({ initTeams, team_modal_shown }: TeamsListProps) {
 
   const [_, startTransition] = useTransition();
 
-  const { setTeam } = useContext(teamContext);
+  const { team, setTeam } = useContext(teamContext);
+
+  const toggleTeam = (newTeam: TeamFull) => {
+    if (team != null && team?.id === newTeam.id) {
+      // if same id, then user clicked again on selected Team, therefore unselect the team.
+      setTeam(null);
+    } else {
+      setTeam(newTeam);
+    }
+  }
 
   function onTeamAdd(previousState: unknown, formData: FormData) {
     const name = formData.get('name') as string;
@@ -44,6 +53,7 @@ export function TeamsList({ initTeams, team_modal_shown }: TeamsListProps) {
         size: 6,
         pokemons: [],
       };
+      if (name.trim() === '') return;
       addOptimisticTeam(dummyTeam);
       await addTeam(name);
       await invalidateCacheTag('teamList');
@@ -60,11 +70,11 @@ export function TeamsList({ initTeams, team_modal_shown }: TeamsListProps) {
         Teams
       </h1>
 
-      <div className="w-[80%] border border-red-700">
+      <div className="w-[80%]">
         <div className="my-4 flex-row grid justify-center items-center content-center justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,400px)] auto-rows-auto gap-4">
           {optimisticTeams.map((team) => (
             <button
-              onClick={() => setTeam(team)}
+              onClick={() => toggleTeam(team)}
               key={team.id}
               role="button"
               className="cursor-pointer"
@@ -72,7 +82,11 @@ export function TeamsList({ initTeams, team_modal_shown }: TeamsListProps) {
               <TeamCard team={team} />
             </button>
           ))}
-          <button onClick={() => setTeamModalShown(true)} role='button' className='cursor-pointer'>
+          <button
+            onClick={() => setTeamModalShown(true)}
+            role="button"
+            className="cursor-pointer"
+          >
             <div className="flex flex-col justify-center items-center rounded-md border border-gray-600 bg-gray-700 p-4 w-[400px] min-h-[310px]">
               <p className="text-8xl">+</p>
             </div>
