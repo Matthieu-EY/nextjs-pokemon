@@ -1,24 +1,8 @@
 import { ExternalResource, Indexable } from './common';
 
-export interface PokemonStat {
-  base_stat: number;
-  effort: number;
-  stat: ExternalResource;
-}
-
-export interface PokemonType {
+export interface PokemonTypeExternal {
   slot: number;
   type: ExternalResource;
-}
-
-export interface PokemonMove {
-  move: ExternalResource;
-  version_group_details: {
-    level_learned_at: number;
-    move_learn_method: ExternalResource;
-    order: number | null;
-    version_group: ExternalResource;
-  }[];
 }
 
 export interface PokemonSprites extends Indexable<string | null> {
@@ -63,92 +47,9 @@ export interface Pokemon {
     effort: number;
     stat: ExternalResource;
   }[];
-  types: PokemonType[];
+  types: PokemonTypeExternal[];
   past_types: {
     generation: ExternalResource;
-    types: PokemonType[];
+    types: PokemonTypeExternal[];
   }[];
-}
-
-export interface PokemonSpecies {
-  id: number;
-  name: string;
-
-  evolves_from_species: ExternalResource;
-  evolution_chain: {
-    url: string;
-  };
-  names: {
-    name: string;
-    language: ExternalResource;
-  }[];
-  flavor_text_entries: {
-    flavor_text: string;
-    language: ExternalResource;
-    version: ExternalResource;
-  }[];
-}
-
-export interface EvolutionChainLink {
-  is_baby: boolean;
-  species: ExternalResource;
-  evolves_to: EvolutionChainLink[];
-}
-
-export interface PokemonEvolutionChain {
-  id: number;
-  chain: {
-    is_baby: boolean;
-    species: ExternalResource;
-    evolves_to: EvolutionChainLink[];
-  }
-}
-
-export interface PokemonMove {
-  id: number;
-  name: string;
-  accuracy: number;
-  pp: number;
-  priority: number;
-  power: number;
-  damage_class: ExternalResource;
-  type: ExternalResource;
-  learned_by_pokemon: ExternalResource[];
-  stat_changes: {
-    change: number;
-    stat: ExternalResource;
-  }[];
-  meta: {
-    ailment: ExternalResource;
-    category: ExternalResource;
-    min_hits: number | null;
-    max_hits: number | null;
-    drain: number;
-    healing: number;
-    crit_rate: number;
-    ailment_chance: number;
-    flinch_chance: number;
-    stat_chance: number;
-  }
-
-  level?: number;
-}
-export interface PokemonType {
-  id: number;
-  name: string;
-
-  damage_relations: {
-    no_damage_to: ExternalResource[];
-    half_damage_to: ExternalResource[];
-    double_damage_to: ExternalResource[];
-    no_damage_from: ExternalResource[];
-    half_damage_from: ExternalResource[];
-    double_damage_from: ExternalResource[];
-  };
-  move_damage_class: ExternalResource;
-  pokemon: {
-    slot: number;
-    pokemon: ExternalResource;
-  }[];
-  moves: ExternalResource[];
 }

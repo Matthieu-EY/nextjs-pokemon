@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { Indexable } from '~/libs/poke/dto/common';
-import type { PokemonType } from '~/libs/poke/dto/pokemon';
+import { PokemonTypeExternal } from '~/libs/poke/dto/pokemon';
+
 
 const colors: Indexable<string> = {
   normal: '#9FA19F',
@@ -24,7 +25,7 @@ const colors: Indexable<string> = {
 };
 
 // FC to discriminate with the Type PokemonType
-export function PokemonTypeFC({ type }: PokemonType) {
+export function PokemonTypeFC({ type }: PokemonTypeExternal) {
   return (
     <div
       className="bg-[#5A5A5A] rounded-xl flex flex-row justify-center items-center gap-x-[12px] p-1"

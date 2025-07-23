@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import type { Pokemon, PokemonMove } from '~/libs/poke/dto/pokemon';
+import type { Pokemon } from '~/libs/poke/dto/pokemon';
 import { PokemonInfo } from './PokemonInfo';
 import { formatName } from '~/utils/format-str';
 import { PokemonCries } from './PokemonCries';
 import { PokemonDisplay } from './PokemonDisplay';
+import { PokemonMove } from '~/libs/poke/dto/move';
 
 interface PokemonProps {
   pokemon: Pokemon;

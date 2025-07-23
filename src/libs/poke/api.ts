@@ -3,7 +3,11 @@
  */
 import { fetchPoke } from '.';
 import { ExternalResource, PokePaginatedResponse } from './dto/common';
-import { Pokemon, PokemonEvolutionChain, PokemonMove, PokemonSpecies, PokemonType } from './dto/pokemon';
+import { PokemonEvolutionChain } from './dto/evolution';
+import { PokemonMove } from './dto/move';
+import { Pokemon } from './dto/pokemon';
+import { PokemonSpecies } from './dto/species';
+import { PokemonType } from './dto/type';
 
 /**
  * API Methods
