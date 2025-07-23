@@ -69,3 +69,6 @@ lerna-debug.log*
 /prisma/generated/
 /prisma/db-backups/
 /prisma/*.snapshot
+
+# eslint
+.eslintcache

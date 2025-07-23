@@ -8,28 +8,10 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  const firstPostId = '5c03994c-fc16-47e0-bd02-d218a370a078';
-  await prisma.post.upsert({
-    where: {
-      id: firstPostId,
+  await prisma.team.create({
+    data: {
+      name: "PokePotes",
     },
-    create: {
-      id: firstPostId,
-      title: 'First Post',
-      text: 'This is an example post generated from `prisma/seed.ts`',
-    },
-    update: {},
-  });
-
-  await prisma.pokemonCombat.upsert({
-    where: {
-      id: 1,
-    },
-    create: {
-      id: 1,
-      idPokemon: 1,
-    },
-    update: {},
   });
 }
 

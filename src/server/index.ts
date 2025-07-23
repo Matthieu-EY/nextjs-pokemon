@@ -1,13 +1,11 @@
 import { pokeRouter } from './routers/poke';
 import { pokeCombatRouter } from './routers/pokeCombat';
-import { postRouter } from './routers/post';
 import { teamRouter } from './routers/team';
 import { createCallerFactory, publicProcedure, router } from './trpc';
 
 export const appRouter = router({
   healthcheck: publicProcedure.query(() => 'yay!'),
 
-  post: postRouter,
   poke: pokeRouter,
   team: teamRouter,
   pokeCombat: pokeCombatRouter,
