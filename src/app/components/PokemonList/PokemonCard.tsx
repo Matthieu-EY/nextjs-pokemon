@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import { trpc } from '~/app/_trpc/client';
 import { Pokemon } from '~/libs/poke/dto/pokemon';
 import { teamContext } from '../Provider/Provider';
+import { invalidateCacheTag } from '~/server/actions';
 
 interface PokemonCardProps {
   pokemon: Pokemon;
@@ -15,16 +16,18 @@ export function PokemonCard({ pokemon }: PokemonCardProps) {
   const { team } = useContext(teamContext);
 
   const addMutation = trpc.pokeCombat.add.useMutation();
-  const deleteMutation = trpc.pokeCombat.delete.useMutation();
+  const deleteMutation = trpc.pokeCombat.deletePokemonInTeam.useMutation();
 
-  const addPokemon = (idPokemon: number) => {
+  const addPokemon = async (idPokemon: number) => {
     if (team == null) return;
     addMutation.mutate({ idPokemon: idPokemon, idTeam: team.id });
+    await invalidateCacheTag("teamList");
   };
 
-  const deletePokemon = (idPokemon: number) => {
+  const deletePokemon = async (idPokemon: number) => {
     if (team == null) return;
-    deleteMutation.mutate({ id: idPokemon });
+    deleteMutation.mutate({ idPokemon: idPokemon, idTeam: team.id });
+    await invalidateCacheTag("teamList");
   };
 
   return (
@@ -32,7 +35,7 @@ export function PokemonCard({ pokemon }: PokemonCardProps) {
       {team != null && (
         <>
           <button
-            onClick={() => addPokemon(pokemon.id)}
+            onClick={() => void addPokemon(pokemon.id)}
             className="absolute bottom-1 left-1"
           >
             <span className="block min-w-[24px] rounded-[50%] bg-green-600 text-center">
@@ -40,7 +43,7 @@ export function PokemonCard({ pokemon }: PokemonCardProps) {
             </span>
           </button>
           <button
-            onClick={() => deletePokemon(pokemon.id)}
+            onClick={() => void deletePokemon(pokemon.id)}
             className="absolute bottom-1 right-1"
           >
             <span className="block min-w-[24px] rounded-[50%] bg-red-600 text-center">

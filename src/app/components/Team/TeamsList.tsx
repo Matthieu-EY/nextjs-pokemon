@@ -33,7 +33,7 @@ export function TeamsList({ initTeams, team_modal_shown }: TeamsListProps) {
 
   const { team, setTeam } = useContext(teamContext);
 
-  const toggleTeam = (newTeam: TeamFull) => {
+  const toggleTeam = async (newTeam: TeamFull) => {
     if (team != null && team?.id === newTeam.id) {
       // if same id, then user clicked again on selected Team, therefore unselect the team.
       setTeam(null);
@@ -74,7 +74,7 @@ export function TeamsList({ initTeams, team_modal_shown }: TeamsListProps) {
         <div className="my-4 flex-row grid justify-center items-center content-center justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,400px)] auto-rows-auto gap-4">
           {optimisticTeams.map((team) => (
             <button
-              onClick={() => toggleTeam(team)}
+              onClick={() => void toggleTeam(team)}
               key={team.id}
               role="button"
               className="cursor-pointer"

@@ -46,4 +46,22 @@ export const pokeCombatRouter = router({
       });
       return deletedPokemonCombat;
     }),
+  
+  deletePokemonInTeam: publicProcedure
+    .input(
+      z.object({
+        idPokemon: z.number().min(0),
+        idTeam: z.number().min(0),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const deletedPokemonCombat = await prisma.pokemonCombat.deleteMany({
+        where: {
+          idPokemon: input.idPokemon,
+          teamId: input.idTeam,
+        },
+        limit: 1,
+      });
+      return deletedPokemonCombat;
+    })
 });

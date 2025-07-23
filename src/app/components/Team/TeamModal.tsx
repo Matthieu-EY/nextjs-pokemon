@@ -23,6 +23,7 @@ export function TeamModal({
           <input
             type="text"
             name="name"
+            autoComplete="username"
             className="border-gray-400 text-black px-2 border rounded-md"
           />
         </div>
