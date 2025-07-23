@@ -5,6 +5,7 @@ import { formatName } from '~/utils/format-str';
 import { PokemonCries } from './PokemonCries';
 import { PokemonDisplay } from './PokemonDisplay';
 import { PokemonMove } from '~/libs/poke/dto/move';
+import Image from 'next/image';
 
 interface PokemonProps {
   pokemon: Pokemon;
@@ -72,9 +73,11 @@ function PokemonDetail({ pokemon, evolution_pokemons, moves }: PokemonProps) {
               key={evol_pokemon.id}
               className="flex flex-col justify-center items-center"
             >
-              <img
+              <Image
                 src={evol_pokemon.sprites.front_default!}
-                className={`min-w-[${evol_pokemon.name === pokemon.name ? 200 : 100}px] min-h-[${evol_pokemon.name === pokemon.name ? 200 : 100}px]`}
+                alt={`Sprite of ${evol_pokemon.name}`}
+                width={evol_pokemon.name === pokemon.name ? 200 : 100}
+                height={evol_pokemon.name === pokemon.name ? 200 : 100}
               />
               <p
                 className={`text-xl capitalize ${evol_pokemon.name === pokemon.name && 'underline'}`}

@@ -48,8 +48,8 @@ export function PokemonDisplay({ name, sprites, types }: PokemonDisplayProps) {
               type="button"
               className="flex p-2 gap-x-4 bg-stone-400 rounded-full items-center justify-center"
             >
-              <Image src="/male.svg" className="max-h-[30px]" alt="Male" />
-              <Image src="/female.svg" className="max-h-[30px]" alt="Female" />
+              <Image src="/male.svg" width={30} height={30} className="max-h-[30px]" alt="Male" />
+              <Image src="/female.svg" width={30} height={30} className="max-h-[30px]" alt="Female" />
             </button>
           )}
         </div>
