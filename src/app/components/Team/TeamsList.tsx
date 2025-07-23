@@ -33,7 +33,7 @@ export function TeamsList({ initTeams, team_modal_shown }: TeamsListProps) {
 
   const { team, setTeam } = useContext(teamContext);
 
-  const toggleTeam = async (newTeam: TeamFull) => {
+  const toggleTeam = (newTeam: TeamFull) => {
     if (team != null && team?.id === newTeam.id) {
       // if same id, then user clicked again on selected Team, therefore unselect the team.
       setTeam(null);

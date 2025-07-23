@@ -6,7 +6,7 @@ import { PokemonPreview } from '../PokemonList/PokemonPreview';
 import { TeamFull } from './TeamsList';
 
 export function TeamBanner() {
-  const { team } = useContext(teamContext);
+  const { team, setTeam } = useContext(teamContext);
 
   if (team == null) return null;
 
@@ -27,13 +27,20 @@ export function TeamBanner() {
 
   return (
     <aside className="fixed min-w-fit w-[55%] left-[50%] -translate-x-[50%] flex flex-col justify-start items-center min-h-[100px] bottom-0 bg-gray-600 border border-gray-500 rounded-lg">
-      <h2 className="relative top-2">{team.name}</h2>
-      <p className="absolute top-2 left-4">Editing team</p>
-      <div className="flex flex-row mt-4 mb-2 gap-x-4">
-        {teamPokemons.map((pokemon) => (
-          <PokemonPreview key={pokemon.id} pokemon={pokemon} />
-        ))}
-      </div>
+      <button
+        onClick={() => setTeam(null)}
+        role="button"
+        type="button"
+        className="cursor-pointer"
+      >
+        <h2 className="relative top-2">{team.name}</h2>
+        <p className="absolute top-2 left-4">Editing team</p>
+        <div className="flex flex-row mt-4 mb-2 gap-x-4">
+          {teamPokemons.map((pokemon) => (
+            <PokemonPreview key={pokemon.id} pokemon={pokemon} />
+          ))}
+        </div>
+      </button>
     </aside>
   );
 }
