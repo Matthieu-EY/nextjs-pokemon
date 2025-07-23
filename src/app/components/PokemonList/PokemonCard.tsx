@@ -13,7 +13,7 @@ interface PokemonCardProps {
 }
 
 export function PokemonCard({ pokemon }: PokemonCardProps) {
-  const { team } = useContext(teamContext);
+  const { team, setTeam } = useContext(teamContext);
 
   const addMutation = trpc.pokeCombat.add.useMutation();
   const deleteMutation = trpc.pokeCombat.deletePokemonInTeam.useMutation();
@@ -21,13 +21,29 @@ export function PokemonCard({ pokemon }: PokemonCardProps) {
   const addPokemon = async (idPokemon: number) => {
     if (team == null) return;
     addMutation.mutate({ idPokemon: idPokemon, idTeam: team.id });
-    await invalidateCacheTag("teamList");
+    setTeam({
+      ...team,
+      pokemons: [
+        ...team.pokemons,
+        {
+          ...pokemon,
+          idPokemon: idPokemon,
+          teamId: team.id,
+          id: Math.floor(Math.random() * 1000) + 20000
+        },
+      ],
+    });
+    await invalidateCacheTag('teamList');
   };
 
   const deletePokemon = async (idPokemon: number) => {
     if (team == null) return;
     deleteMutation.mutate({ idPokemon: idPokemon, idTeam: team.id });
-    await invalidateCacheTag("teamList");
+    setTeam({
+      ...team,
+      pokemons: team.pokemons.filter((poke) => poke.teamId !== team.id || poke.idPokemon !== idPokemon),
+    })
+    await invalidateCacheTag('teamList');
   };
 
   return (
