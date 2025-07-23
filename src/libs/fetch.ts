@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:src/libs/fetch.ts
 interface RequestOptions {
+========
+interface TMDBRequestOptions {
+>>>>>>>> feat/pokemon-list:src/libs/tmdb/index.ts
   path: string;
   params?: Record<string, string | number | boolean>;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';

@@ -10,28 +10,20 @@ import { Pokemon } from '~/libs/poke/dto/pokemon';
 interface PokemonListTypeProps {
   searchedName: string;
   setSearchedName: React.Dispatch<React.SetStateAction<string>>;
-  searchedType: Type | 'All';
-  setSearchedType: React.Dispatch<React.SetStateAction<Type | 'All'>>;
+  searchedType: Type | "All";
+  setSearchedType: React.Dispatch<React.SetStateAction<Type | "All">>;
 }
 
-export function PokemonListType({
-  searchedName,
-  setSearchedName,
-  searchedType,
-  setSearchedType,
-}: PokemonListTypeProps) {
+export function PokemonListType({ searchedName, setSearchedName, searchedType, setSearchedType }: PokemonListTypeProps) {
+
   const typeData = trpc.poke.getTypeByName.useQuery({ name: searchedType });
-  const pokemonIds =
-    typeData.data?.pokemon
-      .map((poke) => parseUrlAndGetParam(poke.pokemon.url))
-      .filter((id) => id != undefined) ?? [];
+  const pokemonIds = typeData.data?.pokemon.map((poke) => parseUrlAndGetParam(poke.pokemon.url)).filter((id) => id != undefined) ?? [];
+  
+  const pokemons = trpc.useQueries((t) => 
+    pokemonIds?.map((id) => t.poke.getPokemonById({ id: parseInt(id, 10) }))
+  ).map((poke) => poke.data);
 
-  const pokemons = trpc
-    .useQueries((t) =>
-      pokemonIds?.map((id) => t.poke.getPokemonById({ id: parseInt(id, 10) })),
-    )
-    .map((poke) => poke.data);
-
+  
   const filteredPokemons = pokemons.filter(
     (pokemon: Pokemon | undefined): pokemon is Pokemon =>
       pokemon != undefined &&

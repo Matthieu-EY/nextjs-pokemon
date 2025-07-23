@@ -2,7 +2,6 @@ import Image from 'next/image';
 import { Indexable } from '~/libs/poke/dto/common';
 import { PokemonTypeExternal } from '~/libs/poke/dto/pokemon';
 
-
 const colors: Indexable<string> = {
   normal: '#9FA19F',
   fighting: '#FF8000',
