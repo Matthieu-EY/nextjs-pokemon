@@ -1,4 +1,4 @@
-import { Type } from "~/libs/poke/dto/common";
+import { Type } from '~/libs/poke/dto/common';
 
 const types = [
   'normal',
@@ -25,14 +25,19 @@ interface PokemonSearchProps {
   searchedName: string;
   setSearchedName: React.Dispatch<React.SetStateAction<string>>;
   searchedType?: string;
-  setSearchedType: React.Dispatch<React.SetStateAction<Type | "All">>;
+  setSearchedType: React.Dispatch<React.SetStateAction<Type | 'All'>>;
 }
 
 const isSearchedType = (str: string): str is Type => {
-  return types.findIndex(((type) => type === str)) !== -1;
-}
+  return types.findIndex((type) => type === str) !== -1;
+};
 
-export function PokemonSearch({ searchedName, setSearchedName, searchedType, setSearchedType }: PokemonSearchProps) {
+export function PokemonSearch({
+  searchedName,
+  setSearchedName,
+  searchedType,
+  setSearchedType,
+}: PokemonSearchProps) {
   return (
     <div className="flex flew-row justify-around">
       <div className="flex flex-col justify-center items-center">
@@ -50,8 +55,12 @@ export function PokemonSearch({ searchedName, setSearchedName, searchedType, set
       <div className="flex flex-col justify-center items-center">
         <p>Search by type</p>
         <select
-          defaultValue={searchedType ?? "All"}
-          onChange={(e) => setSearchedType(isSearchedType(e.target.value) ? e.target.value : "All")}
+          defaultValue={searchedType ?? 'All'}
+          onChange={(e) =>
+            setSearchedType(
+              isSearchedType(e.target.value) ? e.target.value : 'All',
+            )
+          }
         >
           <option value="All" defaultChecked>
             All
@@ -64,5 +73,5 @@ export function PokemonSearch({ searchedName, setSearchedName, searchedType, set
         </select>
       </div>
     </div>
-  )
+  );
 }

@@ -19,29 +19,37 @@ export default async function PokemonDetailPage({
     const speciesId = parseUrlAndGetParamInt(pokemon.species.url);
     const species = await serverTrpc.poke.getSpeciesById({ id: speciesId });
 
-    const evolutionChainID = parseUrlAndGetParamInt(species.evolution_chain.url);
+    const evolutionChainID = parseUrlAndGetParamInt(
+      species.evolution_chain.url,
+    );
     const evolution_chain = await serverTrpc.poke.getEvolutionById({
       id: evolutionChainID,
     });
 
     const moves_preprocess = pokemon.moves
       .filter((move) => move.version_group_details[0].level_learned_at > 0)
-      .sort((move1, move2) => move1.version_group_details[0].level_learned_at - move2.version_group_details[0].level_learned_at)
+      .sort(
+        (move1, move2) =>
+          move1.version_group_details[0].level_learned_at -
+          move2.version_group_details[0].level_learned_at,
+      )
       .map((move) => {
-        return { 
+        return {
           id: parseUrlAndGetParamInt(move.move.url),
           level: move.version_group_details[0].level_learned_at,
-        }
+        };
       });
 
     const moves = await Promise.all(
       moves_preprocess.map(async (move_preprocess) => {
-        const move = await serverTrpc.poke.getMoveById({ id: move_preprocess.id });
+        const move = await serverTrpc.poke.getMoveById({
+          id: move_preprocess.id,
+        });
         return {
           ...move,
           level: move_preprocess.level,
         };
-      })
+      }),
     );
     /*
     const valid_moves = moves.filter(

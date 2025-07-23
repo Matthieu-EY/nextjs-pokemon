@@ -40,7 +40,7 @@ export function TeamsList({ initTeams, team_modal_shown }: TeamsListProps) {
     } else {
       setTeam(newTeam);
     }
-  }
+  };
 
   function onTeamAdd(previousState: unknown, formData: FormData) {
     const name = formData.get('name') as string;

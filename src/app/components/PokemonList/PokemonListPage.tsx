@@ -7,18 +7,25 @@ import { parseUrlAndGetParam, parseUrlAndGetParamInt } from '~/utils/parse-url';
 import { PokemonCard } from './PokemonCard';
 import { useState } from 'react';
 import { throttle } from '~/utils/ratelimit';
-import { ExternalResource, PokePaginatedResponse, Type } from '~/libs/poke/dto/common';
+import {
+  ExternalResource,
+  PokePaginatedResponse,
+  Type,
+} from '~/libs/poke/dto/common';
 import { PokemonSearch } from './PokemonSearch';
 import { PokemonListType } from './PokemonListType';
 
 const FETCH_LIMIT_POKEMONS = 50;
 
 interface PokemonListProps {
-  initialPokemonList: PokePaginatedResponse<ExternalResource>
+  initialPokemonList: PokePaginatedResponse<ExternalResource>;
   initialPokemonDetails: Record<string, Pokemon>;
 }
 
-export function PokemonListPage({ initialPokemonList, initialPokemonDetails }: PokemonListProps) {
+export function PokemonListPage({
+  initialPokemonList,
+  initialPokemonDetails,
+}: PokemonListProps) {
   // name inside "search by name" input
   const [searchedName, setSearchedName] = useState('');
   const [searchedType, setSearchedType] = useState<Type | 'All'>('All');
@@ -59,15 +66,19 @@ export function PokemonListPage({ initialPokemonList, initialPokemonDetails }: P
       )
       .flat() ?? [];
   const pokemonsTrpc = trpc.useQueries((t) =>
-    pokeIds.map((id) => t.poke.getPokemonById({ id }, { initialData: initialPokemonDetails[id] })),
+    pokeIds.map((id) =>
+      t.poke.getPokemonById({ id }, { initialData: initialPokemonDetails[id] }),
+    ),
   );
 
-  const filteredPokemons = pokemonsTrpc.map((poke) => poke.data).filter(
-    (pokemon: Pokemon | undefined): pokemon is Pokemon =>
-      pokemon != undefined &&
-      (searchedName === '' ||
-        new RegExp(searchedName, 'i').exec(pokemon?.name) != null),
-  );
+  const filteredPokemons = pokemonsTrpc
+    .map((poke) => poke.data)
+    .filter(
+      (pokemon: Pokemon | undefined): pokemon is Pokemon =>
+        pokemon != undefined &&
+        (searchedName === '' ||
+          new RegExp(searchedName, 'i').exec(pokemon?.name) != null),
+    );
 
   if (searchedType !== 'All') {
     return (

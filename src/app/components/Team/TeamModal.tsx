@@ -36,7 +36,7 @@ export function TeamModal({
           </button>
           {/* Navigates back to the previous URL - closing the modal */}
           <button
-            type='button'
+            type="button"
             onClick={onModalClose}
             className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
           >

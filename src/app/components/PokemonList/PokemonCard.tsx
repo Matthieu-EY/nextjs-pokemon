@@ -31,12 +31,18 @@ export function PokemonCard({ pokemon }: PokemonCardProps) {
     <div className="flex flex-col justify-center items-center relative rounded-md border border-gray-600 bg-gray-700 p-4 w-[150px] h-[200px]">
       {team != null && (
         <>
-          <button onClick={() => addPokemon(pokemon.id)} className="absolute bottom-1 left-1">
+          <button
+            onClick={() => addPokemon(pokemon.id)}
+            className="absolute bottom-1 left-1"
+          >
             <span className="block min-w-[24px] rounded-[50%] bg-green-600 text-center">
               +
             </span>
           </button>
-          <button onClick={() => deletePokemon(pokemon.id)} className="absolute bottom-1 right-1">
+          <button
+            onClick={() => deletePokemon(pokemon.id)}
+            className="absolute bottom-1 right-1"
+          >
             <span className="block min-w-[24px] rounded-[50%] bg-red-600 text-center">
               -
             </span>

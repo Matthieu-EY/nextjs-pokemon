@@ -1,12 +1,18 @@
-"use client";
+'use client';
 
-import { createContext, Dispatch, PropsWithChildren, SetStateAction, useState } from "react";
-import { TeamFull } from "../Team/TeamsList";
+import {
+  createContext,
+  Dispatch,
+  PropsWithChildren,
+  SetStateAction,
+  useState,
+} from 'react';
+import { TeamFull } from '../Team/TeamsList';
 
 type TeamContext = {
   team: TeamFull | null;
   setTeam: Dispatch<SetStateAction<TeamFull | null>>;
-}
+};
 
 export const teamContext = createContext<TeamContext>({} as TeamContext);
 
@@ -17,5 +23,5 @@ export function Provider({ children }: PropsWithChildren) {
     <teamContext.Provider value={{ team, setTeam }}>
       {children}
     </teamContext.Provider>
-  )
+  );
 }

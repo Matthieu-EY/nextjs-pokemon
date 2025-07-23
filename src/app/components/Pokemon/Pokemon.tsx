@@ -63,20 +63,31 @@ function PokemonDetail({ pokemon, evolution_pokemons, moves }: PokemonProps) {
         </PokemonInfo>
       </div>
 
-      <div className='flex flex-col justify-center mt-8 mb-4'>
-        <h4 className='w-full text-center text-2xl'>Evolution</h4>
-        <div className='flex flex-row justify-around items-center px-16'>
-            {evolution_pokemons?.map((evol_pokemon) => (
-              <Link href={`/pokemon/${evol_pokemon.id}`} key={evol_pokemon.id} className='flex flex-col justify-center items-center'>
-                <img src={evol_pokemon.sprites.front_default!} className={`min-w-[${evol_pokemon.name === pokemon.name ? 200 : 100}px] min-h-[${evol_pokemon.name === pokemon.name ? 200 : 100}px]`}/>
-                <p className={`text-xl capitalize ${evol_pokemon.name === pokemon.name && 'underline'}`}>{evol_pokemon.name}</p>
-              </Link>
-            ))}
+      <div className="flex flex-col justify-center mt-8 mb-4">
+        <h4 className="w-full text-center text-2xl">Evolution</h4>
+        <div className="flex flex-row justify-around items-center px-16">
+          {evolution_pokemons?.map((evol_pokemon) => (
+            <Link
+              href={`/pokemon/${evol_pokemon.id}`}
+              key={evol_pokemon.id}
+              className="flex flex-col justify-center items-center"
+            >
+              <img
+                src={evol_pokemon.sprites.front_default!}
+                className={`min-w-[${evol_pokemon.name === pokemon.name ? 200 : 100}px] min-h-[${evol_pokemon.name === pokemon.name ? 200 : 100}px]`}
+              />
+              <p
+                className={`text-xl capitalize ${evol_pokemon.name === pokemon.name && 'underline'}`}
+              >
+                {evol_pokemon.name}
+              </p>
+            </Link>
+          ))}
         </div>
       </div>
 
-      <div className='flex flex-col justify-center mt-4 mb-4'>
-        <h4 className='w-full text-center text-2xl mb-4'>Moves</h4>
+      <div className="flex flex-col justify-center mt-4 mb-4">
+        <h4 className="w-full text-center text-2xl mb-4">Moves</h4>
         <table>
           <thead>
             <tr>
@@ -93,7 +104,7 @@ function PokemonDetail({ pokemon, evolution_pokemons, moves }: PokemonProps) {
             {moves?.map((move) => (
               <tr key={move.id}>
                 <th>{move.level}</th>
-                <th className='capitalize'>{move.name}</th>
+                <th className="capitalize">{move.name}</th>
                 <th>{move.type.name}</th>
                 <th>{move.damage_class.name}</th>
                 <th>{move.power ? move.power : '-'}</th>
