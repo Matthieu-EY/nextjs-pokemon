@@ -3,6 +3,8 @@ import { DefaultLayout } from '../../components/DefaultLayout';
 import { serverTrpc } from '~/app/_trpc/server';
 import { PokemonDetail } from '~/app/components/Pokemon/Pokemon';
 import { parseUrlAndGetParamInt } from '~/utils/parse-url';
+import { nestedObjToArray } from '~/utils/iterate';
+import { PokemonEvolutionChain } from '~/libs/poke/dto/evolution';
 
 export default async function PokemonDetailPage({
   params,
@@ -51,21 +53,13 @@ export default async function PokemonDetailPage({
         };
       }),
     );
-    /*
-    const valid_moves = moves.filter(
-      (move) => move.damage_class.name !== 'status',
-    );
-    */
-
-    // TODO: this should REALLY be somewhere else
 
     // parse evolution chain into more simplified format
-    const evolutions = [];
-    let curr_chain_link = evolution_chain.chain;
-    while (curr_chain_link) {
-      evolutions.push(curr_chain_link.species.name);
-      curr_chain_link = curr_chain_link.evolves_to?.[0];
-    }
+    const evolutions = nestedObjToArray<PokemonEvolutionChain['chain'], string>(
+      evolution_chain.chain,
+      (chain) => chain.evolves_to?.[0],
+      (chain) => chain.species.name,
+    );
 
     const evolution_pokemons = await Promise.all(
       evolutions.map((evolution) => {

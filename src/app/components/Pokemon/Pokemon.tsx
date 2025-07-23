@@ -64,60 +64,64 @@ function PokemonDetail({ pokemon, evolution_pokemons, moves }: PokemonProps) {
         </PokemonInfo>
       </div>
 
-      <div className="flex flex-col justify-center mt-8 mb-4">
-        <h4 className="w-full text-center text-2xl">Evolution</h4>
-        <div className="flex flex-row justify-around items-center px-16">
-          {evolution_pokemons?.map((evol_pokemon) => (
-            <Link
-              href={`/pokemon/${evol_pokemon.id}`}
-              key={evol_pokemon.id}
-              className="flex flex-col justify-center items-center"
-            >
-              <Image
-                src={evol_pokemon.sprites.front_default!}
-                alt={`Sprite of ${evol_pokemon.name}`}
-                width={evol_pokemon.name === pokemon.name ? 200 : 100}
-                height={evol_pokemon.name === pokemon.name ? 200 : 100}
-              />
-              <p
-                className={`text-xl capitalize ${evol_pokemon.name === pokemon.name && 'underline'}`}
+      {evolution_pokemons != null && evolution_pokemons?.length > 0 && (
+        <div className="flex flex-col justify-center mt-8 mb-4">
+          <h4 className="w-full text-center text-2xl">Evolution</h4>
+          <div className="flex flex-row justify-around items-center px-16">
+            {evolution_pokemons?.map((evol_pokemon) => (
+              <Link
+                href={`/pokemon/${evol_pokemon.id}`}
+                key={evol_pokemon.id}
+                className="flex flex-col justify-center items-center"
               >
-                {evol_pokemon.name}
-              </p>
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      <div className="flex flex-col justify-center mt-4 mb-4">
-        <h4 className="w-full text-center text-2xl mb-4">Moves</h4>
-        <table>
-          <thead>
-            <tr>
-              <th>Level</th>
-              <th>Move</th>
-              <th>Type</th>
-              <th>Category</th>
-              <th>Power</th>
-              <th>Accuracy</th>
-              <th>PP</th>
-            </tr>
-          </thead>
-          <tbody>
-            {moves?.map((move) => (
-              <tr key={move.id}>
-                <th>{move.level}</th>
-                <th className="capitalize">{move.name}</th>
-                <th>{move.type.name}</th>
-                <th>{move.damage_class.name}</th>
-                <th>{move.power ? move.power : '-'}</th>
-                <th>{move.accuracy ? `${move.accuracy} %` : '-'}</th>
-                <th>{move.pp}</th>
-              </tr>
+                <Image
+                  src={evol_pokemon.sprites.front_default!}
+                  alt={`Sprite of ${evol_pokemon.name}`}
+                  width={evol_pokemon.name === pokemon.name ? 200 : 100}
+                  height={evol_pokemon.name === pokemon.name ? 200 : 100}
+                />
+                <p
+                  className={`text-xl capitalize ${evol_pokemon.name === pokemon.name && 'underline'}`}
+                >
+                  {evol_pokemon.name}
+                </p>
+              </Link>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </div>
+        </div>
+      )}
+
+      {moves != null && moves?.length > 0 && (
+        <div className="flex flex-col justify-center mt-4 mb-4">
+          <h4 className="w-full text-center text-2xl mb-4">Moves</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Level</th>
+                <th>Move</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Power</th>
+                <th>Accuracy</th>
+                <th>PP</th>
+              </tr>
+            </thead>
+            <tbody>
+              {moves?.map((move) => (
+                <tr key={move.id}>
+                  <th>{move.level}</th>
+                  <th className="capitalize">{move.name}</th>
+                  <th>{move.type.name}</th>
+                  <th>{move.damage_class.name}</th>
+                  <th>{move.power ? move.power : '-'}</th>
+                  <th>{move.accuracy ? `${move.accuracy} %` : '-'}</th>
+                  <th>{move.pp}</th>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       <h2 className="text-2xl font-semibold py-2">Raw data:</h2>
       <pre className="bg-gray-900 p-4 rounded-xl overflow-x-scroll">
