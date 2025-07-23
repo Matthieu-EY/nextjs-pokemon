@@ -42,7 +42,7 @@ export async function fetchAPI<T>({
       unknown
     >;
     throw new Error(
-      `POKE API Error (${response.status}): ${JSON.stringify(errorData)}`,
+      `API Error (${response.status}): ${JSON.stringify(errorData)}`,
     );
   }
   return response.json() as Promise<T>;

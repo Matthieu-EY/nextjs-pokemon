@@ -1,9 +1,9 @@
+import { PropsWithChildren } from 'react';
 interface ModalProps {
-  children: React.ReactNode;
   shown?: boolean;
 }
 
-export function Modal({ children, shown }: ModalProps) {
+export function Modal({ children, shown }: PropsWithChildren<ModalProps>) {
   return (
     <div
       className={`${shown ? 'visible' : 'hidden'} fixed inset-0 bg-opacity-50 backdrop-blur-xs overflow-y-auto h-full w-full flex items-center justify-center`}

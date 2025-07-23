@@ -9,6 +9,7 @@ export async function addTeam(name: string) {
 }
 
 export async function invalidateCacheTag(tag: string) {
+  // revalidateTag is server only, hence this server action
   revalidateTag(tag);
   // server actions must be async, but revalidateTag is synchronous.
   // This means we need to add this to avoid errors/warnings.
