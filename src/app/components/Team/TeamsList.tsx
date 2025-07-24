@@ -73,14 +73,15 @@ export function TeamsList({ initTeams, team_modal_shown }: TeamsListProps) {
       <div className="w-[80%]">
         <div className="my-4 flex-row grid justify-center items-center content-center justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,400px)] auto-rows-auto gap-4">
           {optimisticTeams.map((team) => (
-            <button
+            <Link
+              href="/pokemon"
               onClick={() => void toggleTeam(team)}
               key={team.id}
               role="button"
               className="cursor-pointer"
             >
               <TeamCard team={team} />
-            </button>
+            </Link>
           ))}
           <button
             onClick={() => setTeamModalShown(true)}

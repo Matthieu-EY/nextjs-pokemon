@@ -48,7 +48,7 @@ export function PokemonList({ pokemons }: PokemonListProps) {
   };
 
   const togglePokemon = async (
-    e: MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: MouseEvent<unknown>,
     pokemon: Pokemon,
   ) => {
     e.stopPropagation();
@@ -69,7 +69,7 @@ export function PokemonList({ pokemons }: PokemonListProps) {
           <button
             key={pokemon.id}
             onClick={(e) => void togglePokemon(e, pokemon)}
-            className="hover:border-gray-300 hover:border hover:rounded-lg cursor-pointer"
+            className={`cursor-pointer hover:border-gray-300 hover:border rounded-lg ${team.pokemons.find((poke) => poke.id === pokemon.id) != null && 'border-gray-200 border'}`}
           >
             <PokemonCard pokemon={pokemon} />
           </button>
