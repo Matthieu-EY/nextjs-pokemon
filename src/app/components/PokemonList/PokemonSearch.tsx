@@ -55,7 +55,7 @@ export function PokemonSearch({
       <div className="flex flex-col justify-center items-center">
         <p>Search by type</p>
         <select
-          name='type_search'
+          name="type_search"
           defaultValue={searchedType ?? 'All'}
           onChange={(e) =>
             setSearchedType(

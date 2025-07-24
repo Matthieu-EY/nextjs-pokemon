@@ -14,6 +14,7 @@ export function TeamBanner() {
 
   if (team == null) return null;
 
+  // fill team.pokemons with dummy content to be able to render empty squares
   const teamPokemons = (
     team.pokemons.length < team.size
       ? team.pokemons.concat(

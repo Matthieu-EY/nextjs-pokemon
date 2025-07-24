@@ -1,11 +1,11 @@
 'use client';
 
 import { Type } from '~/libs/poke/dto/common';
-import { PokemonCard } from './PokemonCard';
 import { PokemonSearch } from './PokemonSearch';
 import { trpc } from '~/app/_trpc/client';
 import { parseUrlAndGetParam } from '../../../utils/parse-url';
 import { Pokemon } from '~/libs/poke/dto/pokemon';
+import { PokemonList } from './PokemonList';
 
 interface PokemonListTypeProps {
   searchedName: string;
@@ -50,11 +50,7 @@ export function PokemonListType({
         setSearchedType={setSearchedType}
       />
 
-      <div className="mt-4 grid justify-center items-center content-center justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,150px)] auto-rows-auto gap-4">
-        {filteredPokemons.map((pokemon) => (
-          <PokemonCard key={pokemon.id} pokemon={pokemon} />
-        ))}
-      </div>
+      <PokemonList pokemons={filteredPokemons} />
     </div>
   );
 }

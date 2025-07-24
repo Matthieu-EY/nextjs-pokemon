@@ -4,7 +4,6 @@ import { trpc } from '~/app/_trpc/client';
 import { useScrollRef } from '~/app/hooks/useScrollRef';
 import { Pokemon } from '~/libs/poke/dto/pokemon';
 import { parseUrlAndGetParam, parseUrlAndGetParamInt } from '~/utils/parse-url';
-import { PokemonCard } from './PokemonCard';
 import { useState } from 'react';
 import { throttle } from '~/utils/ratelimit';
 import {
@@ -14,6 +13,7 @@ import {
 } from '~/libs/poke/dto/common';
 import { PokemonSearch } from './PokemonSearch';
 import { PokemonListType } from './PokemonListType';
+import { PokemonList } from './PokemonList';
 
 const FETCH_LIMIT_POKEMONS = 50;
 
@@ -102,11 +102,7 @@ export function PokemonListPage({
         setSearchedType={setSearchedType}
       />
 
-      <div className="mt-4 grid justify-center items-center content-center justify-items-center grid-flow-row grid-cols-[repeat(auto-fit,150px)] auto-rows-auto gap-4">
-        {filteredPokemons.map((pokemon) => (
-          <PokemonCard key={pokemon.id} pokemon={pokemon} />
-        ))}
-      </div>
+      <PokemonList pokemons={filteredPokemons} />
 
       <div className="w-full flex justify-center">
         <button
