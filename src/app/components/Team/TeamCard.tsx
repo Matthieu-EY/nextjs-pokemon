@@ -8,20 +8,22 @@ interface TeamCardProps {
 export function TeamCard({ team }: TeamCardProps) {
   // if less pokemons than team.size, then pad the array with dummy objects
   // this is used to render empty squares, as in the Pokémon UI
-  const teamPokemons = team.pokemons
-    .concat(
-      Array(team.size - team.pokemons.length)
-        .fill({
-          idPokemon: -1,
-        })
-        .map((poke: TeamFull['pokemons'][number]) => {
-          return {
-            ...poke,
-            id: poke.id ?? crypto.randomUUID(),
-          };
-        }),
-    )
-    .slice(0, team.size);
+  const teamPokemons = (
+    team.pokemons.length < team.size
+      ? team.pokemons.concat(
+          Array(team.size - team.pokemons.length)
+            .fill({
+              idPokemon: -1,
+            })
+            .map((poke: TeamFull['pokemons'][number]) => {
+              return {
+                ...poke,
+                id: poke.id ?? crypto.randomUUID(),
+              };
+            }),
+        )
+      : team.pokemons
+  ).slice(0, team.size);
 
   return (
     <div className="flex flex-col justify-start items-center rounded-md border border-gray-600 bg-gray-700 p-4 w-[400px] min-h-[300px]">

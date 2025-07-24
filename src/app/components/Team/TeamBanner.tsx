@@ -4,29 +4,43 @@ import { useContext } from 'react';
 import { teamContext } from '../Provider/Provider';
 import { PokemonPreview } from '../PokemonList/PokemonPreview';
 import { TeamFull } from './TeamsList';
+import { trpc } from '~/app/_trpc/client';
+import { invalidateCacheTag } from '~/server/actions';
 
 export function TeamBanner() {
   const { team, setTeam } = useContext(teamContext);
 
+  const deleteTeamMutation = trpc.team.delete.useMutation();
+
   if (team == null) return null;
 
-  const teamPokemons = team.pokemons
-    .concat(
-      Array(team.size - team.pokemons.length)
-        .fill({
-          idPokemon: -1,
-        })
-        .map((poke: TeamFull['pokemons'][number]) => {
-          return {
-            ...poke,
-            id: poke.id ?? crypto.randomUUID(),
-          };
-        }),
-    )
-    .slice(0, team.size);
+  const teamPokemons = (
+    team.pokemons.length < team.size
+      ? team.pokemons.concat(
+          Array(team.size - team.pokemons.length)
+            .fill({
+              idPokemon: -1,
+            })
+            .map((poke: TeamFull['pokemons'][number]) => {
+              return {
+                ...poke,
+                id: poke.id ?? crypto.randomUUID(),
+              };
+            }),
+        )
+      : team.pokemons
+  ).slice(0, team.size);
+
+  const deleteTeam = async (id: number) => {
+    deleteTeamMutation.mutate({ id });
+    setTeam(null);
+    await invalidateCacheTag('teamList');
+    // TODO: cache still shown
+    // find a way to clear the cache
+  };
 
   return (
-    <aside className="fixed min-w-fit w-[55%] left-[50%] -translate-x-[50%] flex flex-col justify-start items-center min-h-[100px] bottom-0 bg-gray-600 border border-gray-500 rounded-lg">
+    <aside className="fixed min-w-fit w-[55%] left-[50%] -translate-x-[50%] flex flex-row justify-center items-start min-h-[100px] bottom-0 bg-gray-600 border border-gray-500 rounded-lg">
       <button
         onClick={() => setTeam(null)}
         role="button"
@@ -40,6 +54,14 @@ export function TeamBanner() {
             <PokemonPreview key={pokemon.id} pokemon={pokemon} />
           ))}
         </div>
+      </button>
+      <button
+        onClick={() => void deleteTeam(team.id)}
+        className="absolute top-1 right-1"
+      >
+        <span className="block min-w-[24px] rounded-[50%] bg-red-600 text-center">
+          -
+        </span>
       </button>
     </aside>
   );
