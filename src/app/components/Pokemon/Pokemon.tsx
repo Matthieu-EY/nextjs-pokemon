@@ -15,9 +15,9 @@ interface PokemonProps {
 
 function PokemonDetail({ pokemon }: PokemonProps) {
   return (
-    <div className="flex flex-col justify-center h-full px-8 ">
-      <Link className="text-gray-300 underline mb-4" href="/">
-        Home
+    <div className="flex flex-col justify-center h-full px-8 pb-4">
+      <Link className="text-gray-300 w-full text-center underline mt-4 mb-4" href="/pokemon">
+        Back
       </Link>
       <h1 className="text-7xl font-bold w-full text-center capitalize mb-4">
         {pokemon.name}
@@ -71,11 +71,6 @@ function PokemonDetail({ pokemon }: PokemonProps) {
       <Suspense fallback={<Loading />}>
         <PokemonMoves pokemonMoves={pokemon.moves} />
       </Suspense>
-
-      <h2 className="text-2xl font-semibold py-2">Raw data:</h2>
-      <pre className="bg-gray-900 p-4 rounded-xl overflow-x-scroll">
-        {JSON.stringify(pokemon, null, 4)}
-      </pre>
     </div>
   );
 }
