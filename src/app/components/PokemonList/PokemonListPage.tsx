@@ -14,6 +14,7 @@ import {
 import { PokemonSearch } from './PokemonSearch';
 import { PokemonListType } from './PokemonListType';
 import { PokemonList } from './PokemonList';
+import Link from 'next/link';
 
 const FETCH_LIMIT_POKEMONS = 50;
 
@@ -92,7 +93,10 @@ export function PokemonListPage({
   }
 
   return (
-    <div className="flex flex-col bg-gray-800 py-8">
+    <div className="flex flex-col bg-gray-800 pt-4 pb-8">
+      <Link className="text-gray-300 w-full text-center underline mb-4" href="/">
+        Home
+      </Link>
       <h1 className="w-full text-center text-4xl font-bold">Pokédex</h1>
 
       <PokemonSearch

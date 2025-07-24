@@ -1,28 +1,25 @@
-import { serverTrpc } from './_trpc/server';
+import Link from 'next/link';
 import { DefaultLayout } from './components/DefaultLayout';
-import { PokemonListPage } from './components/PokemonList/PokemonListPage';
-import { parseUrlAndGetParamInt } from '../utils/parse-url';
-import { Pokemon } from '~/libs/poke/dto/pokemon';
-
-export default async function HomePage() {
-  const firstPokemons = await serverTrpc.poke.list({ limit: 50 })
-  const firstPokemonDetailsResponse = await Promise.all(
-    firstPokemons.results.map((pokemon) => serverTrpc.poke.getPokemonById({ id: parseUrlAndGetParamInt(pokemon.url)}))
-  );
-
-  const firstPokemonDetailsById = firstPokemonDetailsResponse.reduce((acc, curr) => {
-    return {
-      ...acc,
-      [curr.id]: curr
-    }
-  }, {} as Record<string, Pokemon>)
-
+export default function HomePage() {
   return (
     <DefaultLayout>
-      <PokemonListPage
-        initialPokemonList={firstPokemons}
-        initialPokemonDetails={firstPokemonDetailsById} 
-      />
+      <div className="h-[100vh] flex flex-col justify-center items-center">
+        <h1 className="my-4 text-4xl font-bold">Pokémon</h1>
+
+        <div className="w-[70%] flex-auto flex flex-row justify-around items-center px-16 gap-x-4">
+          <Link href="/pokemon">
+            <div className='flex justify-center items-center bg-gray-600 rounded-xl min-w-[250px] min-h-[150px]'>
+              <p className='text-3xl'>Pokémon</p>
+            </div>
+          </Link>
+
+          <Link href="/teams">
+            <div className='flex justify-center items-center bg-gray-600 rounded-xl min-w-[250px] min-h-[150px]'>
+              <p className='text-3xl'>Teams</p>
+            </div>
+          </Link>
+        </div>
+      </div>
     </DefaultLayout>
   );
 }
