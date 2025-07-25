@@ -6,7 +6,7 @@ import { TeamCard } from './TeamCard';
 import { Pokemon } from '~/libs/poke/dto/pokemon';
 import { TeamModal } from './TeamModal';
 import { useContext, useOptimistic, useState, useTransition } from 'react';
-import { addTeam, invalidateCacheTag } from '~/server/actions';
+import { addTeam } from '~/server/actions';
 import { teamContext } from '../Provider/Provider';
 
 export interface TeamFull extends Omit<Team, 'createdAt' | 'updatedAt'> {
@@ -56,7 +56,6 @@ export function TeamsList({ initTeams, team_modal_shown }: TeamsListProps) {
       if (name.trim() === '') return;
       addOptimisticTeam(dummyTeam);
       await addTeam(name);
-      await invalidateCacheTag('teamList');
     });
     return name ?? '';
   }

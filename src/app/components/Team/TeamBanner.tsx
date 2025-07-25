@@ -4,13 +4,10 @@ import { useContext } from 'react';
 import { teamContext } from '../Provider/Provider';
 import { PokemonPreview } from '../PokemonList/PokemonPreview';
 import { TeamFull } from './TeamsList';
-import { trpc } from '~/app/_trpc/client';
-import { invalidateCacheTag } from '~/server/actions';
+import { deleteTeam as deleteTeamServer } from '~/server/actions';
 
 export function TeamBanner() {
   const { team, setTeam } = useContext(teamContext);
-
-  const deleteTeamMutation = trpc.team.delete.useMutation();
 
   if (team == null) return null;
 
@@ -33,9 +30,8 @@ export function TeamBanner() {
   ).slice(0, team.size);
 
   const deleteTeam = async (id: number) => {
-    deleteTeamMutation.mutate({ id });
     setTeam(null);
-    await invalidateCacheTag('teamList');
+    await deleteTeamServer(id);
     // TODO: cache still shown
     // find a way to clear the cache
   };

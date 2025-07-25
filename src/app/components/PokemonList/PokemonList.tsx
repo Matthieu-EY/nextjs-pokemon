@@ -4,8 +4,7 @@ import { MouseEvent, useContext } from 'react';
 import { Pokemon } from '~/libs/poke/dto/pokemon';
 import { teamContext } from '../Provider/Provider';
 import { PokemonCard } from './PokemonCard';
-import { trpc } from '~/app/_trpc/client';
-import { invalidateCacheTag } from '~/server/actions';
+import { addPokemonToTeam, deletePokemonFromTeam } from '~/server/actions';
 
 interface PokemonListProps {
   pokemons: Pokemon[];
@@ -14,12 +13,9 @@ interface PokemonListProps {
 export function PokemonList({ pokemons }: PokemonListProps) {
   const { team, setTeam } = useContext(teamContext);
 
-  const addMutation = trpc.pokeCombat.add.useMutation();
-  const deleteMutation = trpc.pokeCombat.deletePokemonInTeam.useMutation();
-
   const addPokemon = async (pokemon: Pokemon) => {
     if (team == null) return;
-    addMutation.mutate({ idPokemon: pokemon.id, idTeam: team.id });
+    await addPokemonToTeam(pokemon.id, team.id);
     setTeam({
       ...team,
       pokemons: [
@@ -32,19 +28,17 @@ export function PokemonList({ pokemons }: PokemonListProps) {
         },
       ],
     });
-    await invalidateCacheTag('teamList');
   };
 
   const deletePokemon = async (pokemon: Pokemon) => {
     if (team == null) return;
-    deleteMutation.mutate({ idPokemon: pokemon.id, idTeam: team.id });
+    await deletePokemonFromTeam(pokemon.id, team.id);
     setTeam({
       ...team,
       pokemons: team.pokemons.filter(
         (poke) => poke.teamId !== team.id || poke.idPokemon !== pokemon.id,
       ),
     });
-    await invalidateCacheTag('teamList');
   };
 
   const togglePokemon = async (
