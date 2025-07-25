@@ -6,11 +6,7 @@ import { Pokemon } from '~/libs/poke/dto/pokemon';
 import Image from 'next/image';
 import Toggle from 'react-toggle';
 
-interface PokemonDisplayProps {
-  name: Pokemon['name'];
-  sprites: Pokemon['sprites'];
-  types: Pokemon['types'];
-}
+type PokemonDisplayProps = Pick<Pokemon, "name" | "sprites" | "types">;
 
 export function PokemonDisplay({ name, sprites, types }: PokemonDisplayProps) {
   const [isFrontFacing, setIsFrontFacing] = useState(true);
