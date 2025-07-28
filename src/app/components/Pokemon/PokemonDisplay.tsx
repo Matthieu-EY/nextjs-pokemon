@@ -4,9 +4,9 @@ import { useState } from 'react';
 import { PokemonTypeFC } from './PokemonType';
 import { Pokemon } from '~/libs/poke/dto/pokemon';
 import Image from 'next/image';
-import Toggle from 'react-toggle';
+import Toggle from '../Toggle/Toggle';
 
-type PokemonDisplayProps = Pick<Pokemon, "name" | "sprites" | "types">;
+type PokemonDisplayProps = Pick<Pokemon, 'name' | 'sprites' | 'types'>;
 
 export function PokemonDisplay({ name, sprites, types }: PokemonDisplayProps) {
   const [isFrontFacing, setIsFrontFacing] = useState(true);
@@ -45,8 +45,20 @@ export function PokemonDisplay({ name, sprites, types }: PokemonDisplayProps) {
               type="button"
               className="flex gap-x-4 bg-stone-400 rounded-full items-center justify-center"
             >
-              <Image src="/male.svg" width={30} height={30} className={`max-h-[30px] m-2 ${isMale && 'border-2 border-gray-300 rounded-full'}`} alt="Male" />
-              <Image src="/female.svg" width={30} height={30} className={`max-h-[30px] m-2 ${!isMale && 'border-2 border-gray-300 rounded-full'}`} alt="Female" />
+              <Image
+                src="/male.svg"
+                width={30}
+                height={30}
+                className={`max-h-[30px] m-2 ${isMale && 'border-2 border-gray-300 rounded-full'}`}
+                alt="Male"
+              />
+              <Image
+                src="/female.svg"
+                width={30}
+                height={30}
+                className={`max-h-[30px] m-2 ${!isMale && 'border-2 border-gray-300 rounded-full'}`}
+                alt="Female"
+              />
             </button>
           )}
         </div>
@@ -74,11 +86,22 @@ export function PokemonDisplay({ name, sprites, types }: PokemonDisplayProps) {
         <div className="flex-1 flex justify-center items-center">
           {sprites.front_shiny && (
             <div className="flex flex-col text-center justify-center items-center gap-y-2">
-              <h4 className="flex flex-row gap-x-2">
-                Shiny{' '}
-                <Image src="/shiny.png" alt="Shiny" width={24} height={24} />
-              </h4>
-              <Toggle onChange={() => setIsShiny((isShiny) => !isShiny)} />
+              <Toggle
+                isOn={isShiny}
+                handleToggle={() => setIsShiny((isShiny) => !isShiny)}
+                onLabel={
+                  <h4 className="flex flex-row gap-x-2">
+                    Shiny{' '}
+                    <Image
+                      src="/shiny.png"
+                      alt="Shiny"
+                      width={24}
+                      height={24}
+                    />
+                  </h4>
+                }
+                offLabel="Not shiny"
+              />
             </div>
           )}
         </div>
