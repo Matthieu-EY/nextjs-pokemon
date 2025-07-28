@@ -1,4 +1,10 @@
-# Prisma + tRPC + Next.js App Router
+# Pokémon Website
+
+This website is part of the frontend onboarding at EY Fabernovel.
+This website allows the user to view info on Pokémon & create Teams.
+Originally, the website would have allowed the user to create a battle between teams, but this idea was scrapped due to lack of time.
+
+Have fun with it !
 
 ## Tech Stack
 
@@ -99,3 +105,4 @@ pnpm test-e2e   # runs e2e tests
 
 Originally created by [@alexdotjs](https://twitter.com/alexdotjs).
 Updated for App Router.
+Developed by Matthieu Sirvan, June 2025
