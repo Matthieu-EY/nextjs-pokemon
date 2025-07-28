@@ -63,7 +63,7 @@ export function PokemonList({ pokemons }: PokemonListProps) {
           <button
             key={pokemon.id}
             onClick={(e) => void togglePokemon(e, pokemon)}
-            className={`cursor-pointer hover:border-gray-300 hover:border rounded-lg ${team.pokemons.find((poke) => poke.id === pokemon.id) != null && 'border-gray-200 border'}`}
+            className={`cursor-pointer hover:border-gray-300 hover:border rounded-lg ${team.pokemons.find((poke) => poke.idPokemon === pokemon.id) != null && 'border-gray-200 border'}`}
           >
             <PokemonCard pokemon={pokemon} />
           </button>
