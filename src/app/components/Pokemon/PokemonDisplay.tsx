@@ -40,26 +40,28 @@ export function PokemonDisplay({ name, sprites, types }: PokemonDisplayProps) {
       <div className="w-full m-auto flex flex-row mb-4">
         <div className="flex-1 flex justify-center items-center">
           {sprites.front_female != null && (
-            <button
-              onClick={() => setIsMale((isMale) => !isMale)}
-              type="button"
-              className="flex gap-x-4 bg-stone-400 rounded-full items-center justify-center"
-            >
-              <Image
-                src="/male.svg"
-                width={30}
-                height={30}
-                className={`max-h-[30px] m-2 ${isMale && 'border-2 border-gray-300 rounded-full'}`}
-                alt="Male"
-              />
-              <Image
-                src="/female.svg"
-                width={30}
-                height={30}
-                className={`max-h-[30px] m-2 ${!isMale && 'border-2 border-gray-300 rounded-full'}`}
-                alt="Female"
-              />
-            </button>
+            <Toggle
+              isOn={isMale}
+              handleToggle={() => setIsMale((isMale) => !isMale)}
+              onLabel={
+                <Image
+                  src="/male.svg"
+                  width={36}
+                  height={36}
+                  className="m-2"
+                  alt="Male"
+                />
+              }
+              offLabel={
+                <Image
+                  src="/female.svg"
+                  width={28}
+                  height={28}
+                  className="m-2"
+                  alt="Female"
+                />
+              }
+            />
           )}
         </div>
 
